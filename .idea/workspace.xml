@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="434be766-5b8f-4c01-a487-762e3a31194b" name="Default Changelist" comment="" />
+    <list default="true" id="434be766-5b8f-4c01-a487-762e3a31194b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverproject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/serverproject/settings.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +18,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1YvewlBpR1RMeJCSe6nrCw0WfTR" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -22,6 +30,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.externalResources" />
   </component>
@@ -224,10 +233,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="162" y="184" key="EnvironmentVariablesDialog/0.0.1536.824@0.0.1536.824" timestamp="1584426802822" />
-    <state x="664" y="73" key="FileChooserDialogImpl" timestamp="1584202336205">
+    <state x="664" y="73" key="FileChooserDialogImpl" timestamp="1584602545664">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="664" y="73" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1584202336205" />
+    <state x="664" y="73" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1584602545664" />
     <state width="591" height="199" key="GridCell.Tab.0.bottom" timestamp="1584429283940">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
