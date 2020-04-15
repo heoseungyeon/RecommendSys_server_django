@@ -108,7 +108,7 @@ class CategoryS(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'category_s'
+        db_table = 'category_image_s'
         unique_together = (('ctgr_name', 'middle_id'),)
 
 

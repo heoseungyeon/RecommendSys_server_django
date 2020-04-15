@@ -23,7 +23,7 @@ class PostList(APIView):
     renderer_classes = [JSONRenderer]
 
     # 게시물 생성
-    def post(self, request, fromat=None):
+    def post(self, request, format=None):
         print("data:",request.data)
         print(type(request.data))
         komoran = Komoran()
@@ -52,6 +52,7 @@ class PostList(APIView):
         queryset = Post.objects.all()
 
         serializer = PostSerializer(queryset, many=True)
+        print(type(serializer.data))
         return Response(serializer.data)
 
 

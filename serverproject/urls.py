@@ -21,4 +21,5 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('voice_recognition/', include('voice_recognition.urls')),
+    path('place_detail/', include('place_detail.urls')),
 ]

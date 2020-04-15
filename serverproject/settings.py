@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'voice_recognition',
+    'place_detail',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': {
@@ -89,9 +90,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'recommendsys',
-        'USER': 'root',
+        'USER': 'admin',
         'PASSWORD': '1234',
-        'HOST': 'localhost',
+        'HOST': '15.164.93.76',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
