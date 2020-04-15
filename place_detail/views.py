@@ -37,8 +37,9 @@ class CreatePlaceActivity(APIView):
                 print(data)
         #serializer = UserPlaceHistorySerializer(data=request.data)
         #if serializer.is_valid():
+        temp = dict()
         temp["rating"] = rating
-
+        data.append(temp)
         return Response(data, status=status.HTTP_201_CREATED)
         #return Response(data, status=status.HTTP_400_BAD_REQUEST)
 

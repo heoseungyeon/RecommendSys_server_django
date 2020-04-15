@@ -6,9 +6,77 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-# Unable to inspect table 'user_place_history'
-# The error was: (1146, "Table 'recommendsys.user_place_history' doesn't exist")
-# Unable to inspect table 'user'
-# The error was: (1146, "Table 'recommendsys.user' doesn't exist")
-# Unable to inspect table 'user_like_history'
-# The error was: (1146, "Table 'recommendsys.user_like_history' doesn't exist")
+
+
+class UserPlaceHistory(models.Model):
+    idx = models.AutoField(primary_key=True)
+    user_idx = models.ForeignKey('User', models.DO_NOTHING, db_column='user_idx', blank=True, null=True)
+    place_id = models.CharField(max_length=100, blank=True, null=True)
+    context = models.TextField(blank=True, null=True)
+    img_cnt = models.IntegerField(blank=True, null=True)
+    like_cnt = models.IntegerField(blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
+    tag_1 = models.CharField(max_length=45, blank=True, null=True)
+    tag_2 = models.CharField(max_length=45, blank=True, null=True)
+    tag_3 = models.CharField(max_length=45, blank=True, null=True)
+    tag_4 = models.CharField(max_length=45, blank=True, null=True)
+    tag_5 = models.CharField(max_length=45, blank=True, null=True)
+    tag_6 = models.CharField(max_length=45, blank=True, null=True)
+    rating = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'user_place_history'
+
+
+class User(models.Model):
+    idx = models.AutoField(primary_key=True)
+    user_id = models.CharField(max_length=100, blank=True, null=True)
+    user_pw = models.CharField(max_length=150, blank=True, null=True)
+    user_nm = models.CharField(max_length=50, blank=True, null=True)
+    user_email = models.CharField(max_length=100, blank=True, null=True)
+    posting_cnt = models.IntegerField(blank=True, null=True)
+    following_cnt = models.IntegerField(blank=True, null=True)
+    follower_cnt = models.IntegerField(blank=True, null=True)
+    decription = models.TextField(blank=True, null=True)
+    age = models.CharField(max_length=45, blank=True, null=True)
+    sex = models.CharField(max_length=45, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'user'
+        unique_together = (('user_id', 'user_email'),)
+
+
+class UserLikeHistory(models.Model):
+    idx = models.AutoField(primary_key=True)
+    posting_idx = models.ForeignKey(UserPlaceHistory, models.DO_NOTHING, db_column='posting_idx', blank=True, null=True)
+    user_idx = models.ForeignKey(User, models.DO_NOTHING, db_column='user_idx', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'user_like_history'
+        unique_together = (('posting_idx', 'user_idx'),)
+
+
+class UserFollow(models.Model):
+    idx = models.AutoField(primary_key=True)
+    user_idx = models.ForeignKey(User, models.DO_NOTHING, db_column='user_idx',related_name='follow_user')
+    following_idx = models.ForeignKey(User, models.DO_NOTHING, db_column='following_idx',related_name='following_user')
+
+    class Meta:
+        managed = False
+        db_table = 'user_follow'
+        unique_together = (('user_idx', 'following_idx'),)
+
+
+class PostingReviews(models.Model):
+    idx = models.AutoField(primary_key=True)
+    posting_idx = models.ForeignKey('UserPlaceHistory', models.DO_NOTHING, db_column='posting_idx', blank=True, null=True)
+    user_idx = models.ForeignKey('User', models.DO_NOTHING, db_column='user_idx', blank=True, null=True)
+    context = models.TextField(blank=True, null=True)
+    date = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'posting_reviews'

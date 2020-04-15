@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('voice_recognition/', include('voice_recognition.urls')),
     path('place_detail/', include('place_detail.urls')),
+    path('follow_feed/',include('follow_feed.urls')),
 ]
