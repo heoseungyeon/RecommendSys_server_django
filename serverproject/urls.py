@@ -23,4 +23,5 @@ urlpatterns = [
     path('voice_recognition/', include('voice_recognition.urls')),
     path('place_detail/', include('place_detail.urls')),
     path('follow_feed/',include('follow_feed.urls')),
+    path('pick/',include('pick.urls')),
 ]

@@ -23,11 +23,7 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="6b2757e2-70c4-446c-aefa-dfba9c056058">
-        <schema name="recommendsys" object-types="function, procedure, view, table" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="68619862-3dac-4868-9fa0-793c858a040b">

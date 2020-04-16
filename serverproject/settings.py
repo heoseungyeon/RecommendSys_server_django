@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'voice_recognition',
     'place_detail',
     'follow_feed',
+    'pick',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': {
