@@ -24,4 +24,7 @@ urlpatterns = [
     path('place_detail/', include('place_detail.urls')),
     path('follow_feed/',include('follow_feed.urls')),
     path('pick/',include('pick.urls')),
+    path('posting/', include('posting.urls')),
+    path('follow_map/', include('follow_map.urls')),
+    path('follow_map_list/', include('follow_map_list.urls')),
 ]

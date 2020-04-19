@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     'place_detail',
     'follow_feed',
     'pick',
+    'posting',
+    'follow_map',
+    'follow_map_list',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': {

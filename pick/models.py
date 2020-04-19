@@ -26,7 +26,7 @@ class User(models.Model):
         db_table = 'user'
         unique_together = (('user_id', 'user_email'),)
 
-
+    
 class UserPick(models.Model):
     idx = models.AutoField(primary_key=True)
     user_idx = models.ForeignKey(User, models.DO_NOTHING, db_column='user_idx', blank=True, null=True)
