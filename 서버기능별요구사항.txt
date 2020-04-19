@@ -1,0 +1,107 @@
+mysql 해킹 방지 URL: https://velog.io/@swhybein/%EA%B0%9C%EB%B0%9C-%EC%9E%85%EB%AC%B8-6%EC%A3%BC-%EB%A7%8C%EC%97%90-DB-%EC%84%9C%EB%B2%84-%ED%95%B4%ED%82%B9%EC%9D%84
+
+django orm CRUD URL: https://www.geeksforgeeks.org/django-orm-inserting-updating-deleting-data/
+
+단일 테이블 inspect 명령어 : python manage.py inspectdb TableName1 TableName2> output.py
+1. 앱만들기
+2. model  -->inspect & update
+3. serializers 
+4. url
+5. views.py
+
+(1)장소 디테일 화면  place_detail
+필요 테이블 모델: user_place_history,user_pick
+1. 화면 전환시 -> 평점, 다른 게시글(id,설명,평점)
+request: place_id(구글api id)
+response: user_place_history=>posting_id,user_idx,place_id,context,img_cnt,avg(rating)
+==> user_place_history테이블의 posting_id(이미지접근위함),
+user_idx,place_id, context ,img_cnt, user_place_history테이블의 모든 place_id에 
+대한 rating 평균
+
+
+2. pick 버튼 누름 -> pick insert 
+request : user_place_history=>user_id,place_id
+==> user_pick 테이블에서 user_id, place_id 등록
+3. pick 버튼 더누름 -> pick delete
+place_id,user_id
+==> user_pick 테이블에서 user_id,place_id 행 삭제 
+-------------------------------------------------완료---------------------------------------
+
+(2)팔로우 피드 화면 , 게시글 리스트 화면  follow_feed
+필요 테이블 모델 : user_place_history, user, user_like_history,
+user_follow,posting_reviews
+1. 화면 전환시 Class CreateFeedActivity
+기능:
+내 팔로잉 유저들 다 보여주기
+내 팔로잉 유저들의 게시글 시간순으로 보여주기 
+게시글의 장소 id와 장소에 대한 rating 값 
+request: user -> user.idx 
+response: user_follow->all(following_idx), user_place_history->posting_id,user_idx,
+                                 place_id,context,img_cnt,rating,tag,date
+
+2. 상단 유저 프로필 누름 --> 유저 정보 페이지로 이동 
+서버할거X
+3. 게시글 댓글 버튼 누름 --> 게시글 내용 및 댓글 화면 이동 
+서버 할거X
+4. 좋아요 버튼 
+기능 : 좋아요 누를시 카운트
+request: user_place_history ->idx, user -> user.idx
+response: 완료여부
+5. 태그 버튼 
+서버 할거X 
+6. 장소 버튼 
+서버할거 X
+
+7. 댓글 버튼 
+기능 : 댓글 누를시 댓글 정보 다 가져오기 
+request: user_place_history ->idx
+response: posting_reviews -> all(user_idx,context,date)
+
+-------------------------------------------------완료---------------------------------------
+(3) 게시글 업로드 화면 posting 
+필요 테이블 모델: user_place_history(all), user(posting_cnt),
+user_?_score, category_?_?
+1. 화면 전환시 X
+기능:
+request: 
+response:
+2. 사진 업로드 X
+3.  별점 X 
+4. 텍스트 리뷰 작성 X
+5. 태그 추가 X
+6. 게시 버튼 
+기능: 장소, 이미지, 날짜, 태그들, 별점, 텍스트 리뷰를 서버로 전송(insert)
+--> user TB --> posting_cnt +1,
+--> 딥러닝 모듈로 이미지와 텍스트 전송--> user_?_score update(딥러닝 모듈 결과) 
+request: user_idx(user),place_id,img_cnt,date,tag_?,rating,context(user_place_history)
+response: 게시 성공 여부 
+-------------------------------------------------완료---------------------------------------
+(4) 찜화면 pick
+필요 테이블 모델: user_pick, user
+1. 화면 전환시 
+기능:  user가 pick한 장소들을 스크롤 식으로 보여주고 지도에 마커를 보여줌
+request: user->idx
+response: user_pick-> place_id
+-------------------------------------------------완료---------------------------------------
+(5) 유저 팔로우 맵 화면(거미줄) follow_map
+필요 테이블 모델: user, user_follow, user_l_score,user_m_score,user_s_score
+user_?_score, category_?_?
+
+1. 화면 전환시 
+기능: 해당 유저가 가지고 있는 팔로잉 유저의 최대 5가지 카테고리(중분류순)으로 유저랭킹화
+user_idx 받아서 
+user_follow 에서 조회 후 팔로우 유저 리스트 생성한 후
+리스트 대상으로 m_score(text,image) 카테고리당 점수합계 내림차순 정렬
+1~5위까지의 카테고리를 가진 유저들 뿌리기
+request: user_idx(user)
+response: 최대 5가지(ctgr_name,user_idx(여러가지))쌍
+
+-------------------------------------------------완료---------------------------------------
+(6) 유저 리스트 맵(팔로우 맵) follow_recommend
+필요 테이블 모델:
+1. 화면 전환시  X
+기능: follow_map 에서 받앗던 두번째 index 값의 user들을 각각의 카테고리에 맞게 
+뿌려주면됨.
+request:
+response:
+-------------------------------------------------완료---------------------------------------
