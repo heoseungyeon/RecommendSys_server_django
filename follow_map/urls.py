@@ -3,7 +3,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from follow_map import views
 
 urlpatterns = [
-    #path('1/', views.UpLoadPosting.as_view()),
+    path('1/', views.CreateFollowMapActivity.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
