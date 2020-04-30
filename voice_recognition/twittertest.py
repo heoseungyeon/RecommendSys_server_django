@@ -1,5 +1,6 @@
 
 from konlpy.tag import Okt
+
 okt = Okt()
 
 okt.morphs  # 형태소 분석

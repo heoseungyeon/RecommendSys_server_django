@@ -1,3 +1,6 @@
+from  rest_framework.permissions import IsAuthenticated
+from knox.auth import TokenAuthentication
+
 from follow_map.models import *
 from rest_framework.renderers import JSONRenderer
 
@@ -5,13 +8,19 @@ from follow_map.serializers import *
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 from follow_map.services import *
 import json
 
 #CreateFollowMapActivity
 class CreateFollowMapActivity(APIView):
     renderer_classes = [JSONRenderer]
+
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
     def get(self, request, format=None):
         user = User.objects.all()
         serializer = UserSerializer(user, many=True)

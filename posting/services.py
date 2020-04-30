@@ -1,8 +1,10 @@
 from posting.models import *
 from posting.serializers import *
 def userPostCnt(user_id):
-    users = User.objects.all()
+    users = User.object.all()
     for user in users:
+        print(user)
+        print(user.posting_cnt)
         if user.idx == int(user_id):
             print("발견0")
             user.posting_cnt+=1

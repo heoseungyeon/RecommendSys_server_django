@@ -50,11 +50,17 @@ INSTALLED_APPS = [
     'posting',
     'follow_map',
     'follow_map_list',
+    'loginApp',
+    'knox',
+    'rest_framework.authtoken',
+
 ]
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': {
         'rest_framework.renderers.JSONRenderer',
-    }
+    },
+    'DEFAULT_AUTHENTICATION_CLASSES':
+        ('knox.auth.TokenAuthentication',),
 }
 
 MIDDLEWARE = [
@@ -94,7 +100,7 @@ WSGI_APPLICATION = 'serverproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'recommendsys',
+        'NAME': 'test',
         'USER': 'heo',
         'PASSWORD': '73007205',
         'HOST': '15.165.204.193',
@@ -104,6 +110,12 @@ DATABASES = {
         }
     }
 }
+
+#AUTH_USER_MODEL = '{app-name}.{User-model-name}'
+AUTH_USER_MODEL = 'loginApp.User'
+AUTH_USER_MODEL = 'place_detail.User'
+AUTH_USER_MODEL = 'follow_feed.User'
+
 
 
 # Password validation

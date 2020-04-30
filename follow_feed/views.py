@@ -1,4 +1,5 @@
-
+from  rest_framework.permissions import IsAuthenticated
+from knox.auth import TokenAuthentication
 from follow_feed.models import *
 
 from rest_framework.renderers import JSONRenderer
@@ -7,22 +8,27 @@ from follow_feed.serializers import *
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 import json
 
 #CreateFeedActivity
 class CreateFeedActivity(APIView):
     renderer_classes = [JSONRenderer]
+
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
     def get(self, request, format=None):
         userplacehistory = UserPlaceHistory.objects.all()
         serializer = UserPlaceHistorySerializer(userplacehistory, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        user_id= request.data.get('user_idx')
+        user_id = request.user.idx
         print("user_id:",user_id)
         #queryset 생성
-        user = User.objects.all()
         user_follow = UserFollow.objects.all()
         userplacehistory = UserPlaceHistory.objects.all().order_by('-date')
         #유저의 팔로잉 유저 리스트
@@ -69,13 +75,19 @@ class CreateFeedActivity(APIView):
 #LikeViews
 class LikeViews(APIView):
     renderer_classes = [JSONRenderer]
+
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
     def get(self, request, format=None):
         userplacehistory = UserPlaceHistory.objects.all()
         serializer = UserPlaceHistorySerializer(userplacehistory, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        user_id= request.data.get('user_idx')
+        user_id= request.user.idx
         posting_id = request.data.get('posting_id')
         #userlikehistory queryset 생성
         userlike = UserLikeHistory.objects
@@ -119,6 +131,12 @@ class LikeViews(APIView):
 #ReviewViews
 class ReviewViews(APIView):
     renderer_classes = [JSONRenderer]
+
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
     def get(self, request, format=None):
         userplacehistory = UserPlaceHistory.objects.all()
         serializer = UserPlaceHistorySerializer(userplacehistory, many=True)
@@ -132,6 +150,8 @@ class ReviewViews(APIView):
         posting_reviews = PostingReviews.objects.all().order_by('-date')
         #해당 게시글 posting_Review 찾기
         for review in posting_reviews:
+            print(review.posting_idx)
+            print(posting_id,"ddd")
             if review.posting_idx.idx == int(posting_id):
                 temp = dict()
                 temp["user_idx"] = review.user_idx.idx

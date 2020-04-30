@@ -1,3 +1,5 @@
+from  rest_framework.permissions import IsAuthenticated
+from knox.auth import TokenAuthentication
 from pick.models import User
 from pick.models import UserPick
 from rest_framework.renderers import JSONRenderer
@@ -6,19 +8,25 @@ from pick.serializers import *
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 import json
 
 #CreatePickActivity
 class CreatePickActivity(APIView):
     renderer_classes = [JSONRenderer]
+
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
     def get(self, request, format=None):
         userpick = UserPick.objects.all()
         serializer = UserPickSerializer(userpick, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        user_id= request.data.get('user_id')
+        user_id= request.data.get('user_idx')
         rating=0.0
         userpick = UserPick.objects.all()
         data= []

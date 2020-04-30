@@ -51,6 +51,7 @@
     <filter-actions connection-id="68619862-3dac-4868-9fa0-793c858a040b" dataset="recommendsys.auth_user_user_permissions" active-filter-id="" />
     <filter-actions connection-id="68619862-3dac-4868-9fa0-793c858a040b" dataset="recommendsys.voice_recognition_post" active-filter-id="" />
     <filter-actions connection-id="75542799-f752-4384-b780-58f6f8d59b47" dataset="recommendsys.auth_user" active-filter-id="" />
+    <filter-actions connection-id="6b2757e2-70c4-446c-aefa-dfba9c056058" dataset="test.user" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />

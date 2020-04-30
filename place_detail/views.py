@@ -1,4 +1,5 @@
-
+from  rest_framework.permissions import IsAuthenticated
+from knox.auth import TokenAuthentication
 from place_detail.models import UserPlaceHistory
 from place_detail.models import UserPick
 from rest_framework.renderers import JSONRenderer
@@ -7,12 +8,18 @@ from place_detail.serializers import *
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 import json
 
 #CreatePlaceActivity
 class CreatePlaceActivity(APIView):
     renderer_classes = [JSONRenderer]
+
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
     def get(self, request, format=None):
         userplacehistory = UserPlaceHistory.objects.all()
         serializer = UserPlaceHistorySerializer(userplacehistory, many=True)
@@ -20,6 +27,7 @@ class CreatePlaceActivity(APIView):
 
     def post(self, request, format=None):
         place_id= request.data.get('place_id')
+
         rating=0.0
         userplacehistory = UserPlaceHistory.objects.all()
         data= []
@@ -47,6 +55,12 @@ class CreatePlaceActivity(APIView):
 #Pick_PlaceActivity(APIView)
 class Pick_PlaceActivity(APIView):
     renderer_classes = [JSONRenderer]
+
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
     def get(self, request, format=None):
         userpick = UserPick.objects.all()
         serializer = UserPickSerializer(userpick, many=True)
@@ -54,7 +68,7 @@ class Pick_PlaceActivity(APIView):
 
     def post(self, request, format=None):
 
-        user_id = request.data.get('user_id')
+        user_id = request.user.idx
         place_id = request.data.get('place_id')
         print(type(user_id))
         print(type(place_id))
@@ -93,6 +107,12 @@ class UserPlaceHistoryList(APIView):
     """
     List all snippets, or create a new snippet.
     """
+
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
     def get(self, request, format=None):
         userplacehistory = UserPlaceHistory.objects.all()
         serializer = UserPlaceHistorySerializer(userplacehistory, many=True)
@@ -110,6 +130,12 @@ class UserPlaceHistoryDetail(APIView):
     """
     Retrieve, update or delete a snippet instance.
     """
+
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
     def get_object(self, pk):
         try:
             return UserPlaceHistory.objects.get(pk=pk)
@@ -140,6 +166,12 @@ class UserPickList(APIView):
     """
     List all snippets, or create a new snippet.
     """
+
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
     def get(self, request, format=None):
         userpick = UserPlaceHistory.objects.all()
         serializer = UserPlaceHistorySerializer(userpick, many=True)
@@ -157,6 +189,12 @@ class UserPickDetail(APIView):
     """
     Retrieve, update or delete a snippet instance.
     """
+
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
     def get_object(self, pk):
         try:
             return UserPick.objects.get(pk=pk)

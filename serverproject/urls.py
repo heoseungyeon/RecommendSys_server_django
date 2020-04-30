@@ -27,4 +27,5 @@ urlpatterns = [
     path('posting/', include('posting.urls')),
     path('follow_map/', include('follow_map.urls')),
     path('follow_map_list/', include('follow_map_list.urls')),
+    path('loginApp/', include('loginApp.urls')),
 ]

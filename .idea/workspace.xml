@@ -2,12 +2,38 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="434be766-5b8f-4c01-a487-762e3a31194b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/loginApp/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/loginApp/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/loginApp/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/loginApp/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/loginApp/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/loginApp/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/loginApp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/follow_feed/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/follow_feed/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/follow_feed/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/follow_feed/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/follow_map/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/follow_map/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/follow_map/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/follow_map/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/follow_map/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/follow_map/services.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/follow_map/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/follow_map/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/follow_map/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/follow_map/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/follow_map_list/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/follow_map_list/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pick/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/pick/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pick/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/pick/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/place_detail/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/place_detail/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/place_detail/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/place_detail/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/posting/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/posting/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/posting/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/posting/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/posting/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/posting/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverenv/Lib/site-packages/konlpy/java/kkma-2.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/serverenv/Lib/site-packages/konlpy/java/kkma-2.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverproject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/serverproject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverproject/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/serverproject/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/voice_recognition/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/voice_recognition/migrations/0002_auto_20200311_1301.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/voice_recognition/migrations/0003_auto_20200311_1323.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/voice_recognition/migrations/0004_auto_20200316_2321.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/voice_recognition/migrations/0005_auto_20200316_2344.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/voice_recognition/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/loginApp/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/voice_recognition/twittertest.py" beforeDir="false" afterPath="$PROJECT_DIR$/voice_recognition/twittertest.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,12 +67,16 @@
     <property name="settings.editor.selected.configurable" value="preferences.externalResources" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\PycharmProjects\server\loginApp" />
+      <recent name="C:\Users\USER\PycharmProjects\server\" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\USER\PycharmProjects\server\follow_map_list" />
       <recent name="C:\Users\USER\PycharmProjects\server\follow_map" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.category_recognize">
+  <component name="RunManager" selected="Python.views (1)">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="server" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -132,7 +162,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="views (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="server" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -140,11 +170,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="C:\Users\USER\AppData\Local\Programs\Python\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/serverproject" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/loginApp" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/serverproject/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/loginApp/views.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -178,16 +208,16 @@
       <item itemvalue="Python.category_recognize" />
       <item itemvalue="Python.manage" />
       <item itemvalue="Python.serializers" />
-      <item itemvalue="Python.test" />
       <item itemvalue="Python.views" />
+      <item itemvalue="Python.views (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.views (1)" />
         <item itemvalue="Python.category_recognize" />
         <item itemvalue="Python.serializers" />
         <item itemvalue="Python.views" />
         <item itemvalue="Python.manage" />
-        <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -229,18 +259,18 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="0" y="127" key="DBNavigator.ConnectionInfoDialog/0.0.1536.824@0.0.1536.824" timestamp="1584277335889" />
-    <state x="0" y="130" key="DBNavigator.DatasetFilterDialog" timestamp="1586664838051">
+    <state x="0" y="130" key="DBNavigator.DatasetFilterDialog" timestamp="1588240199829">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="0" y="130" key="DBNavigator.DatasetFilterDialog/0.0.1536.824@0.0.1536.824" timestamp="1586664838051" />
+    <state x="0" y="130" key="DBNavigator.DatasetFilterDialog/0.0.1536.824@0.0.1536.824" timestamp="1588240199829" />
     <state x="0" y="70" key="DBNavigator.MethodExecutionHistoryDialog" timestamp="1584201040976">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="0" y="70" key="DBNavigator.MethodExecutionHistoryDialog/0.0.1536.824@0.0.1536.824" timestamp="1584201040976" />
-    <state x="7" y="129" width="747" height="683" key="DBNavigator.ProjectSettingsDialog" timestamp="1586952665462">
+    <state x="7" y="129" width="747" height="683" key="DBNavigator.ProjectSettingsDialog" timestamp="1588046735691">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="7" y="129" width="747" height="683" key="DBNavigator.ProjectSettingsDialog/0.0.1536.824@0.0.1536.824" timestamp="1586952665462" />
+    <state x="7" y="129" width="747" height="683" key="DBNavigator.ProjectSettingsDialog/0.0.1536.824@0.0.1536.824" timestamp="1588046735691" />
     <state x="162" y="184" key="EnvironmentVariablesDialog" timestamp="1584426802822">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -249,22 +279,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="664" y="73" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1586952607301" />
-    <state width="591" height="199" key="GridCell.Tab.0.bottom" timestamp="1584429283940">
+    <state width="760" height="200" key="GridCell.Tab.0.bottom" timestamp="1588053222099">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="591" height="199" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1584429283940" />
-    <state width="591" height="199" key="GridCell.Tab.0.center" timestamp="1584429283940">
+    <state width="760" height="200" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1588053222099" />
+    <state width="760" height="200" key="GridCell.Tab.0.center" timestamp="1588053222099">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="591" height="199" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1584429283940" />
-    <state width="591" height="199" key="GridCell.Tab.0.left" timestamp="1584429283940">
+    <state width="760" height="200" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1588053222099" />
+    <state width="760" height="200" key="GridCell.Tab.0.left" timestamp="1588053222099">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="591" height="199" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1584429283940" />
-    <state width="591" height="199" key="GridCell.Tab.0.right" timestamp="1584429283940">
+    <state width="760" height="200" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1588053222099" />
+    <state width="760" height="200" key="GridCell.Tab.0.right" timestamp="1588053222099">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="591" height="199" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1584429283940" />
+    <state width="760" height="200" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1588053222099" />
     <state width="373" height="249" key="GridCell.Tab.1.bottom" timestamp="1584424967037">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -285,17 +315,17 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="12" y="36" width="914" height="709" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1584427957923" />
-    <state x="471" y="240" key="com.intellij.ide.util.TipDialog" timestamp="1587264291692">
+    <state x="471" y="240" key="com.intellij.ide.util.TipDialog" timestamp="1587961488579">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="471" y="240" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1587264291692" />
-    <state x="87" y="47" width="597" height="735" key="find.popup" timestamp="1587265667593">
+    <state x="471" y="240" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1587961488579" />
+    <state x="87" y="47" width="597" height="735" key="find.popup" timestamp="1587971679868">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="87" y="47" width="597" height="735" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1587265667593" />
-    <state x="46" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1587279621800">
+    <state x="87" y="47" width="597" height="735" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1587971679868" />
+    <state x="46" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1588232408100">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="46" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1587279621800" />
+    <state x="46" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1588232408100" />
   </component>
 </project>
