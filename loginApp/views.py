@@ -65,13 +65,13 @@ class UserAPI(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
     def get_object(self):
-        print(self.request.auth)
-        print(self.request.data)
-        print(self.request.user.idx)
-        print(self.request.content_type)
-        print(self.request.FILES)
-        print(self.request.user.user_email)
-        print(self.request.user.idx)
-        print(self.request.user.user_id)
+        # print(self.request.auth)
+        # print(self.request.data)
+        # print(self.request.user.idx)
+        # print(self.request.content_type)
+        # print(self.request.FILES)
+        # print(self.request.user.user_email)
+        # print(self.request.user.idx)
+        # print(self.request.user.user_id)
 
         return self.request.user

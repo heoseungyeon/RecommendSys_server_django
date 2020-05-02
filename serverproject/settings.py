@@ -10,9 +10,9 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-import pymysql
-
-pymysql.install_as_MySQLdb()
+# import pymysql
+#
+# pymysql.install_as_MySQLdb()
 
 import os
 
@@ -51,16 +51,24 @@ INSTALLED_APPS = [
     'follow_map',
     'follow_map_list',
     'loginApp',
+    'commentApp',
+    'homeApp',
+    'mypageApp',
+    'recommendApp',
     'knox',
-    'rest_framework.authtoken',
+    # 'rest_framework.authtoken',
 
 ]
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'knox.auth.TokenAuthentication',
+    ),
+
+    'DEFAULT_RENDERER_CLASSES': (
+
         'rest_framework.renderers.JSONRenderer',
-    },
-    'DEFAULT_AUTHENTICATION_CLASSES':
-        ('knox.auth.TokenAuthentication',),
+    ),
 }
 
 MIDDLEWARE = [
@@ -113,8 +121,8 @@ DATABASES = {
 
 #AUTH_USER_MODEL = '{app-name}.{User-model-name}'
 AUTH_USER_MODEL = 'loginApp.User'
-AUTH_USER_MODEL = 'place_detail.User'
-AUTH_USER_MODEL = 'follow_feed.User'
+# AUTH_USER_MODEL = 'place_detail.User'
+# AUTH_USER_MODEL = 'follow_feed.User'
 
 
 
@@ -140,9 +148,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 

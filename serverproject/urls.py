@@ -20,7 +20,7 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('voice_recognition/', include('voice_recognition.urls')),
+    # path('voice_recognition/', include('voice_recognition.urls')),
     path('place_detail/', include('place_detail.urls')),
     path('follow_feed/',include('follow_feed.urls')),
     path('pick/',include('pick.urls')),
@@ -28,4 +28,8 @@ urlpatterns = [
     path('follow_map/', include('follow_map.urls')),
     path('follow_map_list/', include('follow_map_list.urls')),
     path('loginApp/', include('loginApp.urls')),
+    path('commentApp/', include('commentApp.urls')),
+    path('mypageApp/', include('mypageApp.urls')),
+    path('recommendApp/', include('recommendApp.urls')),
+    path('homeApp/', include('homeApp.urls')),
 ]

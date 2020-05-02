@@ -78,6 +78,7 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['user_id']
 
     class Meta:
+        managed = False
         db_table = 'user'
 
 
