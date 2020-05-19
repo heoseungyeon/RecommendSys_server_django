@@ -6,7 +6,8 @@ import operator
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from itertools import chain
-
+import numpy as np
+import pandas as pd
 
 def test():
 
@@ -343,11 +344,20 @@ def getRecommend(request_sentence, request_user):
                     other_pt.append([image.get('avg_score'), text.get('avg_score')])
                     print("other pt: ", [image.get('avg_score'), text.get('avg_score')])
 
+    print("other: ", other_pt)
     cal = list()
-    for idx, val in enumerate(other_pt):
-        cal.append((others_image[idx].get('user_idx'), euclidean_distance(val, user_pt)))
-    distance = sorted(cal, key=operator.itemgetter(1))
-    print(distance)
+    if user_pt == [0,0]:
+        print("euclidean_distance")
+        for idx, val in enumerate(other_pt):
+            cal.append((others_image[idx].get('user_idx'), euclidean_distance(val, user_pt)))
+        distance = sorted(cal, key=operator.itemgetter(1))
+        print("sorted : ", distance)
+
+    else :
+        print("pearson_similarity")
+        cal = pearson_similarity(other_pt, user_pt)
+        distance = sorted(cal, key=operator.itemgetter(1), reverse = True)
+        print("sorted : ", distance)
 
     # user = User.object.get(idx = distance[0][0])
     #
@@ -364,6 +374,22 @@ def getRecommend(request_sentence, request_user):
 
     print(query_set)
     return query_set
+
+def pearson_similarity(other_pt , user_pt):
+
+    lst = other_pt
+    lst.insert(0, user_pt)
+    print(lst)
+    df =pd.DataFrame(lst).T
+    corr =df.corr(method = 'pearson')
+    index_list = corr[0].index.tolist()
+    value_list = corr[0].values.tolist()
+    return_list = list()
+    length = len(index_list)
+    for i in range(1, length) :
+        return_list.append([ index_list[i],value_list[i] ])
+    print(return_list)
+    return return_list
 
 
 def euclidean_distance(other_pt, user_pt):
