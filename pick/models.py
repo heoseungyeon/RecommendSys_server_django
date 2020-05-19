@@ -38,7 +38,7 @@ class User(AbstractBaseUser):
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
     idx = models.AutoField(primary_key=True)
-    user_id = models.CharField(max_length=100, blank=True, null=True)
+    nickname = models.CharField(max_length=100, blank=True, null=True)
     user_nm = models.CharField(max_length=50, blank=True, null=True)
     user_email = models.CharField(unique=True, max_length=100, blank=True, null=True)
     posting_cnt = models.IntegerField(blank=True, null=True)

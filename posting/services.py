@@ -2,8 +2,9 @@ from posting.models import *
 from posting.serializers import *
 def userPostCnt(user_id):
     users = User.object.all()
+
     for user in users:
-        print(user)
+        print("user",user)
         print(user.posting_cnt)
         if user.idx == int(user_id):
             print("발견0")
@@ -15,12 +16,13 @@ def currentPostId():
     post = UserPlaceHistory.objects.last()
     return post.idx
 
-def insertUserPlaceHistory(request):
+def insertUserPlaceHistory(request,post_id):
     print(request.data)
     serializer = UserPlaceHistorySerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return True
+    print(serializer.errors)
     return False
 
 def insertScore(request,imageScore,textScore):

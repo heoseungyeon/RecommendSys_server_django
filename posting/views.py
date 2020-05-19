@@ -43,7 +43,7 @@ class UpLoadPosting(APIView):
         imageScore['칼국수']=1
         textScore['매콤한']=1
         #Insert to UserPlaceHistory
-        check=insertUserPlaceHistory(request)
+        check=insertUserPlaceHistory(request,post_id)
 
         #Insert to Score
         if check==True:
