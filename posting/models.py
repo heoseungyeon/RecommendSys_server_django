@@ -16,7 +16,7 @@ def date_upload_posting(instance, filename):
     # upload_to="%Y/%m/%d" 처럼 날짜로 세분화
     ymd_path = timezone.now().strftime('%Y/%m/%d')
     #path
-    path = ymd_path+"/"+str(UserPlaceHistory.objects.last().idx+1)
+    #path = ymd_path+"/"+str(UserPlaceHistory.objects.last().idx+1)
     # 길이 32 인 uuid 값
     uuid_name = uuid4().hex
     # 확장자 추출
@@ -24,10 +24,9 @@ def date_upload_posting(instance, filename):
     # 결합 후 return
     return '/'.join([
         'posting',
-        path,
+        ymd_path,
         uuid_name + extension,
         ])
-
 
 
 class UserPlaceHistory(models.Model):
@@ -35,7 +34,11 @@ class UserPlaceHistory(models.Model):
     user_idx = models.ForeignKey('User', models.DO_NOTHING, db_column='user_idx', blank=True, null=True)
     place_id = models.CharField(max_length=100, blank=True, null=True)
     context = models.TextField(blank=True, null=True)
-    img_url = models.ImageField(upload_to=date_upload_posting, null=True)
+    img_url_1 = models.ImageField(upload_to=date_upload_posting, null=True)
+    img_url_2 = models.ImageField(upload_to=date_upload_posting, null=True)
+    img_url_3 = models.ImageField(upload_to=date_upload_posting, null=True)
+    img_url_4 = models.ImageField(upload_to=date_upload_posting, null=True)
+    img_url_5 = models.ImageField(upload_to=date_upload_posting, null=True)
     like_cnt = models.IntegerField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
     tag_1 = models.CharField(max_length=45, blank=True, null=True)
