@@ -22,7 +22,7 @@ class CreateFollowMapActivity(APIView):
     ]
 
     def get(self, request, format=None):
-        user = User.objects.all()
+        user = User.object.all()
         serializer = UserSerializer(user, many=True)
         return Response(serializer.data)
 

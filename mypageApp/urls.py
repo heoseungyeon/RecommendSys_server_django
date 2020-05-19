@@ -5,5 +5,5 @@ from . import views
 urlpatterns = [
     path('mypage/', views.MyPageDetail.as_view()),
     # path('userpage/', views.UserPageDetail.as_view()),
-    path('userpage/<int:idx>/', views.UserPageDetail.as_view()),
+    path('userpage/<str:nickname>/', views.UserPageDetail.as_view()),
 ]

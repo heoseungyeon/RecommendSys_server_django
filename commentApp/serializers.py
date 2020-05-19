@@ -3,14 +3,19 @@ from .models import *
 
 
 class PostingReviewSerializer(serializers.ModelSerializer):
+    nickname = serializers.CharField(source='user_idx.nickname', required=False)
+
     class Meta:
         model = PostingReviews
-        fields = '__all__'
+        fields = ['idx', 'nickname', 'context', 'date']
+
+
 
 class CommentsSerializer(serializers.ModelSerializer):
-
+    nickname = serializers.CharField(source='user_idx.nickname', required=False)
     comment = PostingReviewSerializer(source='postingreviews_set', many=True)
 
     class Meta:
         model = UserPlaceHistory
-        fields = ('idx', 'date', 'context', 'comment')
+        fields = ('idx', 'nickname', 'date', 'context', 'comment')
+

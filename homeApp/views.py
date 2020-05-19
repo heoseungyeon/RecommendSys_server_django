@@ -12,7 +12,6 @@ from .models import *
 
 class HomeListAPIView(APIView):
 
-    authentication_classes = [TokenAuthentication, ]
     permission_classes = [
         permissions.IsAuthenticated,
     ]
@@ -26,10 +25,11 @@ class HomeListAPIView(APIView):
         user_pick = user.home_userpick_set.all()
         pick_serializer = PickPlaceSerializer(user_pick, many=True)
 
-        realtime_reviews = UserPlaceHistory.objects.all().order_by('-date')[:5]
+
+        realtime_reviews = UserPlaceHistory.objects.all().order_by('-date')[:8]
         real_serializer = UserPlaceHistorySerializer(realtime_reviews, many=True)
 
-        hot_reviews = UserPlaceHistory.objects.all().order_by('-like_cnt')[:5]
+        hot_reviews = UserPlaceHistory.objects.all().order_by('-like_cnt')[:8]
         hot_serializer = UserPlaceHistorySerializer(hot_reviews, many=True)
 
         category_m = get_random_m()
@@ -40,7 +40,6 @@ class HomeListAPIView(APIView):
 
 
         return Response({
-
             "home_recommendation":home_serializer.data,
             "user_pick" : pick_serializer.data,
             "real_time": real_serializer.data,
@@ -52,24 +51,23 @@ class HomeListAPIView(APIView):
 
 class SearchListAPIView(APIView):
 
-    authentication_classes = [TokenAuthentication, ]
     permission_classes = [
         permissions.IsAuthenticated,
     ]
 
     def get(self, request):
 
-        user = request.user
-        query_set = get_home_recommend(user)
-        home_serializer = HomeSerializer(query_set, many= True)
+        # user = request.user
+        # query_set = get_home_recommend(user)
+        # home_serializer = HomeSerializer(query_set, many= True)
 
         # user_pick = user.userpick_set.all()
         # pick_serializer = PickPlaceSerializer(user_pick, many=True)
 
-        realtime_reviews = UserPlaceHistory.objects.all().order_by('-date')[:5]
+        realtime_reviews = UserPlaceHistory.objects.all().order_by('-date')[:8]
         real_serializer = UserPlaceHistorySerializer(realtime_reviews, many=True)
 
-        hot_reviews = UserPlaceHistory.objects.all().order_by('-like_cnt')[:5]
+        hot_reviews = UserPlaceHistory.objects.all().order_by('-like_cnt')[:8]
         hot_serializer = UserPlaceHistorySerializer(hot_reviews, many=True)
 
         category_m = get_random_m()
@@ -81,10 +79,10 @@ class SearchListAPIView(APIView):
 
         return Response({
 
-            "home_recommendation":home_serializer.data,
+            # "home_recommendation":home_serializer.data,
             # "user_pick" : pick_serializer.data,
-            "real_time": real_serializer.data,
-            "hot": hot_serializer.data,
+            "realtime_posting": real_serializer.data,
+            "hot_posting": hot_serializer.data,
             "category_m": category_m_serializer.data,
             "category_s": category_s_serializer.data
 

@@ -4,10 +4,15 @@ from recommendApp.models import *
 from pick.models import UserPick
 
 
+class RecommendUserPlaceHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserPlaceHistory
+        fields = ['place_id']
+
 class UserPlaceHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPlaceHistory
-        fields = ('user_idx', 'place_id')
+        fields = '__all__'
 
 
 class PickPlaceSerializer(serializers.ModelSerializer):
@@ -30,8 +35,8 @@ class CategoryImageSSerializer(serializers.ModelSerializer):
 
 class HomeSerializer(serializers.ModelSerializer) :
 
-    place = UserPlaceHistorySerializer(source='userplacehistory_set', many=True)
+    recommend_place = RecommendUserPlaceHistorySerializer(source='userplacehistory_set', many=True)
 
     class Meta:
         model = User
-        fields = ('idx', 'user_id', 'place')
+        fields = ('idx', 'nickname', 'recommend_place')

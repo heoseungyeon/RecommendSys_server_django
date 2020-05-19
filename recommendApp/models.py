@@ -1,6 +1,8 @@
 from django.db import models
 from loginApp.models import User
-
+import os
+from uuid import uuid4
+from django.utils import timezone
 
 # Create your models here.
 
@@ -199,3 +201,23 @@ class ImageSScore(models.Model):
     class Meta:
         managed = False
         db_table = 'image_s_score'
+
+def date_upload_recommend(instance, filename):
+    # upload_to="%Y/%m/%d" 처럼 날짜로 세분화
+    ymd_path = timezone.now().strftime('%Y/%m/%d')
+    # 길이 32 인 uuid 값
+    uuid_name = uuid4().hex
+    # 확장자 추출
+    extension = os.path.splitext(filename)[-1].lower()
+    # 결합 후 return
+    return '/'.join([
+        'recommend',
+        ymd_path,
+        uuid_name + extension,
+        ])
+
+class Upload(models.Model):
+    image = models.ImageField(upload_to=date_upload_recommend)
+
+    class Meta:
+        db_table = 'upload'

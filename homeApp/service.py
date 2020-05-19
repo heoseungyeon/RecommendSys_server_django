@@ -57,8 +57,8 @@ def getUpdateHistory_image_s(request_user, weight):
     for history in image_s_history:
         image_s.append({'image_ctgr_idx': history['ctgr_idx'], 'avg_score': history['cnt'] * weight, 'level': 'S'})
 
-    print(image_s)
-    print(image_s_history)
+    print("updated image_s" , image_s)
+    # print(image_s_history)
     print('--------------------------------------------------------')
 
     return image_s
@@ -85,8 +85,8 @@ def getUpdateHistory_image_m(request_user,weight):
     for history in image_m_history:
         image_m.append({'image_ctgr_idx': history['ctgr_idx'], 'avg_score': history['cnt'] * weight, 'level': 'M'})
 
-    print(image_m)
-    print(image_m_history)
+    print("updated image_m" ,image_m)
+    # print(image_m_history)
     print('--------------------------------------------------------')
     return image_m
 
@@ -111,8 +111,8 @@ def getUpdateHistory_text_s(request_user, weight):
     for history in text_s_history:
         text_s.append({'text_ctgr_idx': history['ctgr_idx'], 'avg_score': history['cnt'] * weight, 'level': 'S'})
 
-    print(text_s)
-    print(text_s_history)
+    print("updated text_s" ,text_s)
+    # print(text_s_history)
     print('--------------------------------------------------------')
     return text_s
 
@@ -137,41 +137,10 @@ def getUpdateHistory_text_m(request_user, weight):
     for history in text_m_history:
         text_m.append({'text_ctgr_idx': history['ctgr_idx'], 'avg_score': history['cnt'] * weight, 'level': 'S'})
 
-    print(text_m)
-    print(text_m_history)
+    print("updated text_m" ,text_m)
+    # print(text_m_history)
     print('--------------------------------------------------------')
     return text_m
-
-
-def getUserImageScore(image_level, image_cg_idx, user_idx):
-    if image_level == 'S':
-        user = User.object.get(idx=user_idx)
-        user_image = user.imagesscore_set.filter(image_ctgr_idx=image_cg_idx).aggregate(Avg('score'))
-        print(user_image)
-
-    else:
-        user = User.object.get(idx=user_idx)
-        user_image = user.imagemscore_set.filter(image_ctgr_idx=image_cg_idx).aggregate(Avg('score'))
-
-    if user_image.get('score__avg') is None:
-        print("user image score is none")
-        return 0
-    return user_image.get('score__avg')
-
-
-def getUserTextScore(text_level, text_cg_idx, user_idx):
-    if text_level == 'S':
-        user = User.object.get(idx=user_idx)
-        user_text = user.textsscore_set.filter(text_ctgr_idx=text_cg_idx).aggregate(Avg('score'))
-
-    else:
-        user = User.object.get(idx=user_idx)
-        user_text = user.textmscore_set.filter(text_ctgr_idx=text_cg_idx).aggregate(Avg('score'))
-
-    if user_text.get('score__avg') is None:
-        print("user text score is none")
-        return 0
-    return user_text.get('score__avg')
 
 
 def getOtherImageScoreList(image_level, image_cg_idx, user_idx):
@@ -216,7 +185,7 @@ def euclidean_distance(other_pt, user_pt):
 
 def get_home_recommend(request_user):
 
-    weight = 0.2
+    weight = 0.5
     image_s_history = getUpdateHistory_image_s(request_user, weight)
     image_m_history = getUpdateHistory_image_m(request_user, weight)
     text_s_history = getUpdateHistory_text_s(request_user, weight)
@@ -224,37 +193,55 @@ def get_home_recommend(request_user):
 
     image_score = image_s_history + image_m_history
     image_score = sorted(image_score, key=itemgetter('avg_score'), reverse=True)
-    print(image_score)
+    print("sorted image score : ", image_score)
     text_score = text_s_history + text_m_history
     text_score = sorted(text_score, key=itemgetter('avg_score'), reverse=True)
-    print(text_score)
-
-    if len(image_score) == 0 and len(text_score) == 0:
-        print("nothing")
-    else:
-        user_pt = [image_score[0]['avg_score'], text_score[0]['avg_score']]
-        print(user_pt)
-
-    others_image = getOtherImageScoreList(image_score[0]['level'], image_score[0]['image_ctgr_idx'], request_user.idx)
-    others_text = getOtherTextScoreList(text_score[0]['level'], text_score[0]['text_ctgr_idx'], request_user.idx)
+    print("sorted text score : ", text_score)
 
     other_pt = list()
-    for image in others_image:
+    if len(image_score) == 0 and len(text_score) == 0:
+        user_pt = [0,0]
+        print("00 case >> user_pt: ", user_pt)
+
+    elif len(image_score) == 0 and len(text_score) >= 1:
+
+        user_pt = [0, text_score[0]['avg_score']]
+        print("01 case >> user_pt: ", user_pt)
+        others_text = getOtherTextScoreList(text_score[0]['level'], text_score[0]['text_ctgr_idx'], request_user.idx)
         for text in others_text:
-            if image.get('user_idx') == text.get('user_idx'):
-                print("find : ", image.get('user_idx'), ", ", text.get('user_idx'))
-                other_pt.append([image.get('avg_score'), text.get('avg_score')])
-                print("other pt: ", [image.get('avg_score'), text.get('avg_score')])
+
+            other_pt.append([0, text.get('avg_score')])
+            print("other pt: ", [0, text.get('avg_score')])
+
+    elif len(image_score) >= 1 and len(text_score) == 0:
+        user_pt = [image_score[0]['avg_score'], 0]
+        print("10 case >> user_pt: ", user_pt)
+        others_image = getOtherImageScoreList(image_score[0]['level'], image_score[0]['image_ctgr_idx'],
+                                              request_user.idx)
+        for image in others_image:
+
+            other_pt.append([image.get('avg_score'), 0])
+            print("other pt: ", [image.get('avg_score'), 0])
+    else:
+        user_pt = [image_score[0]['avg_score'], text_score[0]['avg_score']]
+        print("11 case >> user_pt: ", user_pt)
+
+        others_image = getOtherImageScoreList(image_score[0]['level'], image_score[0]['image_ctgr_idx'], request_user.idx)
+        others_text = getOtherTextScoreList(text_score[0]['level'], text_score[0]['text_ctgr_idx'], request_user.idx)
+
+
+        for image in others_image:
+            for text in others_text:
+                if image.get('user_idx') == text.get('user_idx'):
+                    print("find : ", image.get('user_idx'), ", ", text.get('user_idx'))
+                    other_pt.append([image.get('avg_score'), text.get('avg_score')])
+                    print("other pt: ", [image.get('avg_score'), text.get('avg_score')])
 
     cal = list()
     for idx, val in enumerate(other_pt):
         cal.append((others_image[idx].get('user_idx'), euclidean_distance(val, user_pt)))
     distance = sorted(cal, key=itemgetter(1))
     print(distance)
-
-    # user = User.object.get(idx = distance[0][0])
-    #
-    # return user
 
     if len(distance) == 1:
         query_set = User.object.all().filter(Q(idx=distance[0][0]))

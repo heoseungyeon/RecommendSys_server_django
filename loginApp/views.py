@@ -19,29 +19,30 @@ def HelloAPI(request):
 
 
 class RegistrationAPI(generics.GenericAPIView):
-    renderer_classes = [JSONRenderer]
 
     serializer_class = CreateUserSerializer
 
     def post(self, request, *args, **kwargs):
-        if len(request.data["user_id"]) < 6 or len(request.data["password"]) < 4:
+        if len(request.data["nickname"]) < 2 or len(request.data["password"]) < 4:
             body = {"message": "short field"}
             return Response(body, status=status.HTTP_400_BAD_REQUEST)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+
         return Response(
             {
                 "user": UserSerializer(
                     user, context=self.get_serializer_context()
                 ).data,
+
                 "token": AuthToken.objects.create(user)[1],
             }
-        )
+        , status = status.HTTP_201_CREATED)
 
 
 class LoginAPI(generics.GenericAPIView):
-    renderer_classes = [JSONRenderer]
+    # renderer_classes = [JSONRenderer]
     # 토큰인증은 username, password로 로그인 인증을 하는데
     # username : 가입 시 name 이므로 email 주소이다.. 씨발;
     def post(self, request, format=None):
@@ -51,13 +52,12 @@ class LoginAPI(generics.GenericAPIView):
         login(request, user)
         return Response({
             "user": UserSerializer(user,
-                                   context=self.get_serializer_context()).data['user_id'],
+                                   context=self.get_serializer_context()).data['nickname'],
             "token": AuthToken.objects.create(user)[1]
         })
 
 
 class UserAPI(generics.RetrieveAPIView):
-    authentication_classes = [TokenAuthentication, ]
     permission_classes = [
         permissions.IsAuthenticated,
     ]
@@ -65,13 +65,6 @@ class UserAPI(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
     def get_object(self):
-        # print(self.request.auth)
-        # print(self.request.data)
-        # print(self.request.user.idx)
-        # print(self.request.content_type)
-        # print(self.request.FILES)
-        # print(self.request.user.user_email)
-        # print(self.request.user.idx)
-        # print(self.request.user.user_id)
+
 
         return self.request.user
