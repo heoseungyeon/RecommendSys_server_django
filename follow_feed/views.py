@@ -44,6 +44,7 @@ class CreateFeedActivity(APIView):
         data= []
         #유저의 팔로잉 유저의 게시물 찾기
         for place in userplacehistory:
+            print(place.user_idx.idx)
             if place.user_idx.idx in follow_list:
                 print("place: ",place)
                 temp = dict()
@@ -51,7 +52,26 @@ class CreateFeedActivity(APIView):
                 temp["user_idx"] = place.user_idx.idx #외래키 이므로 해당 값을 갖는 user 테이블의 값을 한번 더 참조해야함
                 temp["place_id"] = place.place_id
                 temp["context"] = place.context
-                temp["img_cnt"] = place.img_cnt
+                if place.img_url_1:
+                    temp["img_url_1"] = place.img_url_1.url
+                else:
+                    print("url_1 없네요")
+                if place.img_url_2:
+                    temp["img_url_2"] = place.img_url_2.url
+                else:
+                    print("url_2 없네요")
+                if place.img_url_3:
+                    temp["img_url_3"] = place.img_url_3.url
+                else:
+                    print("url_2 없네요")
+                if place.img_url_4:
+                    temp["img_url_4"] = place.img_url_4.url
+                else:
+                    print("url_4 없네요")
+                if place.img_url_5:
+                    temp["img_url_5"] = place.img_url_5.url
+                else:
+                    print("url_5 없네요")
                 temp["like_cnt"] = place.like_cnt
                 temp["date"] = place.date
                 temp["tag_1"] = place.tag_1

@@ -7,7 +7,26 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.utils import timezone
+import os
+from uuid import uuid4
 
+#date_upload_to_posting
+def date_upload_posting(instance, filename):
+    # upload_to="%Y/%m/%d" 처럼 날짜로 세분화
+    ymd_path = timezone.now().strftime('%Y/%m/%d')
+    #path
+    #path = ymd_path+"/"+str(UserPlaceHistory.objects.last().idx+1)
+    # 길이 32 인 uuid 값
+    uuid_name = uuid4().hex
+    # 확장자 추출
+    extension = os.path.splitext(filename)[-1].lower()
+    # 결합 후 return
+    return '/'.join([
+        'posting',
+        ymd_path,
+        uuid_name + extension,
+        ])
 
 
 class UserPlaceHistory(models.Model):
@@ -15,7 +34,11 @@ class UserPlaceHistory(models.Model):
     user_idx = models.ForeignKey('User', models.DO_NOTHING,db_column='user_idx', blank=True, null=True)
     place_id = models.CharField(max_length=100, blank=True, null=True)
     context = models.TextField(blank=True, null=True)
-    img_url = models.ImageField(upload_to="")
+    img_url_1 = models.ImageField(upload_to=date_upload_posting, null=True, blank=True)
+    img_url_2 = models.ImageField(upload_to=date_upload_posting, null=True, blank=True)
+    img_url_3 = models.ImageField(upload_to=date_upload_posting, null=True, blank=True)
+    img_url_4 = models.ImageField(upload_to=date_upload_posting, null=True, blank=True)
+    img_url_5 = models.ImageField(upload_to=date_upload_posting, null=True, blank=True)
     like_cnt = models.IntegerField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
     tag_1 = models.CharField(max_length=45, blank=True, null=True)

@@ -1,5 +1,5 @@
 from follow_map.models import *
-
+from follow_map.serializers import *
 def search_following(user_id):
     user_follow = UserFollow.objects.all()
 
@@ -88,7 +88,9 @@ def category_following(friends,ranks):
         for score in imageMScore:
             if score.user_idx.idx in friends and score.image_ctgr_idx.ctgr_mid == image:
                 if not(score.user_idx.idx in temp):
-                    temp.append(score.user_idx.idx)
+                    serializer = UserSerializer(score.user_idx)
+                    temp.append(serializer.data)
+
 
         images[categoryImageM.get(ctgr_mid=image).ctgr_name] = temp
 
@@ -99,7 +101,8 @@ def category_following(friends,ranks):
         for score in textMScore:
             if score.user_idx.idx in friends and score.text_ctgr_idx.ctgr_id == text:
                 if not(score.user_idx.idx in temp):
-                    temp.append(score.user_idx.idx)
+                    serializer = UserSerializer(score.user_idx)
+                    temp.append(serializer.data)
 
         texts[categoryTextM.get(ctgr_id=text).ctgr_name] = temp
 
