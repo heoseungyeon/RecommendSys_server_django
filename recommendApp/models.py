@@ -3,7 +3,7 @@ from loginApp.models import User
 import os
 from uuid import uuid4
 from django.utils import timezone
-
+from follow_feed.models import date_upload_posting
 # Create your models here.
 
 
@@ -62,13 +62,16 @@ class CategoryTextS(models.Model):
         managed = False
         db_table = 'category_text_s'
 
-
 class UserPlaceHistory(models.Model):
     idx = models.AutoField(primary_key=True)
     user_idx = models.ForeignKey(User, models.DO_NOTHING, db_column='user_idx', blank=True, null=True)
     place_id = models.CharField(max_length=100, blank=True, null=True)
     context = models.TextField(blank=True, null=True)
-    img_cnt = models.IntegerField(blank=True, null=True)
+    img_url_1 = models.ImageField(upload_to=date_upload_posting, null=True, blank=True)
+    img_url_2 = models.ImageField(upload_to=date_upload_posting, null=True, blank=True)
+    img_url_3 = models.ImageField(upload_to=date_upload_posting, null=True, blank=True)
+    img_url_4 = models.ImageField(upload_to=date_upload_posting, null=True, blank=True)
+    img_url_5 = models.ImageField(upload_to=date_upload_posting, null=True, blank=True)
     like_cnt = models.IntegerField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     tag_1 = models.CharField(max_length=45, blank=True, null=True)
@@ -82,6 +85,7 @@ class UserPlaceHistory(models.Model):
     class Meta:
         managed = False
         db_table = 'user_place_history'
+
 
 
 class UserLScore(models.Model):

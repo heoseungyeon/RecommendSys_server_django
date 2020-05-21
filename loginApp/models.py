@@ -53,7 +53,7 @@ class User(AbstractBaseUser):
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
     idx = models.AutoField(primary_key=True)
-    nickname = models.CharField(max_length=100, null = True)
+    nickname = models.CharField(unique =True, max_length=100, null = True)
     user_nm = models.CharField(max_length=50, null = True)
     user_email = models.CharField(unique=True, max_length=100, null = True)
     posting_cnt = models.IntegerField(blank=True, null=True, default = 0)
@@ -73,5 +73,6 @@ class User(AbstractBaseUser):
     # REQUIRED_FIELDS = ['user_id']
 
     class Meta:
+        managed = False
         db_table = 'user'
 

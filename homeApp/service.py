@@ -5,7 +5,9 @@ from django.db.models import Avg, Max, Min, Sum
 from django.db.models import Count
 from operator import itemgetter
 from django.db.models import Q
-
+import numpy as np
+import pandas as pd
+import operator
 
 def get_random_m():
     category_list = list()
@@ -176,12 +178,28 @@ def getOtherTextScoreList(text_level, text_cg_idx, user_idx):
         print("doesnotexist")
 
 
+def pearson_similarity(other_pt , user_pt):
+
+    lst = other_pt
+    lst.insert(0, user_pt)
+    print(lst)
+    df =pd.DataFrame(lst).T
+    corr =df.corr(method = 'pearson')
+    index_list = corr[0].index.tolist()
+    value_list = corr[0].values.tolist()
+    return_list = list()
+    length = len(index_list)
+    for i in range(1, length) :
+        return_list.append([ index_list[i],value_list[i] ])
+    print(return_list)
+    return return_list
+
+
 def euclidean_distance(other_pt, user_pt):
     distance = 0
     for i in range(len(other_pt)):
         distance += (other_pt[i] - user_pt[i]) ** 2
     return distance ** 0.5
-
 
 def get_home_recommend(request_user):
 
@@ -237,11 +255,21 @@ def get_home_recommend(request_user):
                     other_pt.append([image.get('avg_score'), text.get('avg_score')])
                     print("other pt: ", [image.get('avg_score'), text.get('avg_score')])
 
+    print("other: ", other_pt)
     cal = list()
-    for idx, val in enumerate(other_pt):
-        cal.append((others_image[idx].get('user_idx'), euclidean_distance(val, user_pt)))
-    distance = sorted(cal, key=itemgetter(1))
-    print(distance)
+    if user_pt == [0,0]:
+        print("euclidean_distance")
+        for idx, val in enumerate(other_pt):
+            cal.append((others_image[idx].get('user_idx'), euclidean_distance(val, user_pt)))
+        distance = sorted(cal, key=operator.itemgetter(1))
+        print("sorted : ", distance)
+
+    else :
+        print("pearson_similarity")
+        cal = pearson_similarity(other_pt, user_pt)
+        distance = sorted(cal, key=operator.itemgetter(1), reverse = True)
+        print("sorted : ", distance)
+
 
     if len(distance) == 1:
         query_set = User.object.all().filter(Q(idx=distance[0][0]))
