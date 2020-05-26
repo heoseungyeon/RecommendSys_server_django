@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.utils import timezone
+import os
+from uuid import uuid4
 # Create your models here.
 def date_upload_profile(instance, filename):
     # upload_to="%Y/%m/%d" 처럼 날짜로 세분화
