@@ -20,6 +20,7 @@ class HomeListAPIView(APIView):
 
         user = request.user
         query_set = get_home_recommend(user)
+
         home_serializer = HomeSerializer(query_set, many= True)
 
         user_pick = user.home_userpick_set.all()

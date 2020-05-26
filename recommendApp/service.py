@@ -363,6 +363,19 @@ def getRecommend(request_sentence, request_user):
     elif len(distance) == 3:
         query_set = User.object.all().filter(Q(idx=distance[0][0]) | Q(idx=distance[1][0]) | Q(idx=distance[2][0]))
 
+    elif len(recommend_user) == 4:
+        query_set = User.object.all().filter(Q(idx=distance[0][0]) | Q(idx=distance[1][0]) | Q(idx=distance[2][0]) | Q(idx=distance[3][0]) )
+
+    elif len(recommend_user) == 5:
+        query_set = User.object.all().filter(Q(idx=distance[0][0]) | Q(idx=distance[1][0]) | Q(idx=distance[2][0]) | Q(idx=distance[3][0]) | Q(idx=distance[4][0]))
+
+    else :
+        print ("more than five")
+        query_set = User.object.all().filter(
+            Q(idx=distance[0][0]) | Q(idx=distance[1][0]) | Q(idx=distance[2][0]) | Q(idx=distance[3][0]) | Q(
+                idx=distance[4][0]))
+
+
     print(query_set)
     return query_set
 
