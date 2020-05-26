@@ -20,6 +20,7 @@ class MyPageDetail(APIView):
 
     def get(self, request, format=None):
 
+        print(request.data)
         serializer = MyPageSerializer(request.user)
         return Response({
            "mypage": serializer.data
