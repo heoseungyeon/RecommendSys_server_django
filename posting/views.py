@@ -1,3 +1,4 @@
+
 from  rest_framework.permissions import IsAuthenticated
 from knox.auth import TokenAuthentication
 from posting.models import *
@@ -66,5 +67,6 @@ class UpLoadPosting(APIView):
 
 
         return Response(data, status=status.HTTP_201_CREATED)
+
 
 

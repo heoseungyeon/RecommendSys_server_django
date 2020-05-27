@@ -19,7 +19,7 @@ class MyPageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('idx', "nickname", 'image', "sex", 'age', 'description', 'posting_cnt', 'following_cnt', 'follower_cnt', 'like_history')
+        fields = ('idx', "nickname", 'user_nm', 'image', "sex", 'age', 'description', 'posting_cnt', 'following_cnt', 'follower_cnt', 'like_history')
         read_only_fields = ('idx',)
 
 class UserPlaceHistorySerializer(serializers.ModelSerializer):
