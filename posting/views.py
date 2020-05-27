@@ -9,9 +9,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from posting.services import *
+#from .darkflow import ImageDetection
 import json
 
 #UpLoadPosting
+
 class UpLoadPosting(APIView):
     renderer_classes = [JSONRenderer]
 
@@ -26,6 +28,16 @@ class UpLoadPosting(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
+        # upload_serializer = UploadSerializer(data=request.data)
+        #
+        # if upload_serializer.is_valid():
+        #     upload_serializer.save()
+        #     img_url = upload_serializer.data['image']
+        #     results = ImageDetection.getItemName(img_url)
+        #     print(results)
+        #     return Response(results, status=status.HTTP_201_CREATED)
+
+        # return Response("z", status=status.HTTP_201_CREATED)
         #Request값 받기
         user_id= request.user.idx
         #posting_cnt +1
@@ -39,7 +51,7 @@ class UpLoadPosting(APIView):
         imageScore = dict()
         textScore = dict()
 
-        #테스트 
+        #테스트
         imageScore['칼국수']=1
         textScore['매콤한']=1
         #Insert to UserPlaceHistory
@@ -49,10 +61,9 @@ class UpLoadPosting(APIView):
         if check==True:
             insertScore(request, imageScore, textScore)
 
-        data= []
-        temp=dict()
-        temp['check']=check
-        data.append(temp)
+        data=dict()
+        data['check']=str(check)
+
 
         return Response(data, status=status.HTTP_201_CREATED)
 

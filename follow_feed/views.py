@@ -1,7 +1,7 @@
 from  rest_framework.permissions import IsAuthenticated
 from knox.auth import TokenAuthentication
 from follow_feed.models import *
-
+from .serializers import *
 from rest_framework.renderers import JSONRenderer
 
 from follow_feed.serializers import *
@@ -32,11 +32,14 @@ class CreateFeedActivity(APIView):
         user_follow = UserFollow.objects.all()
         userplacehistory = UserPlaceHistory.objects.all().order_by('-date')
         #유저의 팔로잉 유저 리스트
-        follow_list= []
+        follow_list= [] #response 용
+        follow_lists= [] #게시물 검색용
         #유저의 팔로잉 유저 찾기
         for follow in user_follow:
             if follow.user_idx.idx == int(user_id):
-                follow_list.append(follow.following_idx.idx)
+                serializer = UserSerializer(follow.following_idx)
+                follow_list.append(serializer.data)
+                follow_lists.append(follow.following_idx.idx)
 
         print(follow_list)
 
@@ -45,31 +48,32 @@ class CreateFeedActivity(APIView):
         #유저의 팔로잉 유저의 게시물 찾기
         for place in userplacehistory:
             print(place.user_idx.idx)
-            if place.user_idx.idx in follow_list:
+            if place.user_idx.idx in follow_lists:
                 print("place: ",place)
                 temp = dict()
                 temp["posting_id"] = place.idx
-                temp["user_idx"] = place.user_idx.idx #외래키 이므로 해당 값을 갖는 user 테이블의 값을 한번 더 참조해야함
+                temp["nickname"] = place.user_idx.nickname #외래키 이므로 해당 값을 갖는 user 테이블의 값을 한번 더 참조해야함
+                temp["image"] = place.user_idx.image.url
                 temp["place_id"] = place.place_id
                 temp["context"] = place.context
-                if place.img_url_1:
-                    temp["img_url_1"] = place.img_url_1.url
+                if place.img_1:
+                    temp["img_1"] = place.img_1.url
                 else:
                     print("url_1 없네요")
-                if place.img_url_2:
-                    temp["img_url_2"] = place.img_url_2.url
+                if place.img_2:
+                    temp["img_2"] = place.img_2.url
                 else:
                     print("url_2 없네요")
-                if place.img_url_3:
-                    temp["img_url_3"] = place.img_url_3.url
+                if place.img_3:
+                    temp["img_3"] = place.img_3.url
                 else:
                     print("url_2 없네요")
-                if place.img_url_4:
-                    temp["img_url_4"] = place.img_url_4.url
+                if place.img_4:
+                    temp["img_4"] = place.img_4.url
                 else:
                     print("url_4 없네요")
-                if place.img_url_5:
-                    temp["img_url_5"] = place.img_url_5.url
+                if place.img_5:
+                    temp["img_5"] = place.img_5.url
                 else:
                     print("url_5 없네요")
                 temp["like_cnt"] = place.like_cnt
@@ -174,7 +178,7 @@ class ReviewViews(APIView):
             print(posting_id,"ddd")
             if review.posting_idx.idx == int(posting_id):
                 temp = dict()
-                temp["user_idx"] = review.user_idx.idx
+                temp["nickname"] = review.user_idx.nickname
                 temp["context"] = review.context
                 temp["date"] = review.date
                 data.append(temp)

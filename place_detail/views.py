@@ -36,7 +36,7 @@ class CreatePlaceActivity(APIView):
                 print(place)
                 temp = dict()
                 temp["posting_id"] = place.idx
-                temp["user_idx"] = place.user_idx.idx #외래키 이므로 해당 값을 갖는 user 테이블의 값을 한번 더 참조해야함
+                temp["nickname"] = place.user_idx.nickname #외래키 이므로 해당 값을 갖는 user 테이블의 값을 한번 더 참조해야함
                 temp["place_id"] = place.place_id
                 temp["context"] = place.context
                 if place.img_url_1:

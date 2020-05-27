@@ -11,6 +11,20 @@ from django.utils import timezone
 import os
 from uuid import uuid4
 
+def date_upload_profile(instance, filename):
+    # upload_to="%Y/%m/%d" 처럼 날짜로 세분화
+    ymd_path = timezone.now().strftime('%Y/%m/%d')
+    # 길이 32 인 uuid 값
+    uuid_name = uuid4().hex
+    # 확장자 추출
+    extension = os.path.splitext(filename)[-1].lower()
+    # 결합 후 return
+    return '/'.join([
+        'profile',
+        ymd_path,
+        uuid_name + extension,
+        ])
+
 #date_upload_to_posting
 def date_upload_posting(instance, filename):
     # upload_to="%Y/%m/%d" 처럼 날짜로 세분화
@@ -84,15 +98,16 @@ class User(AbstractBaseUser):
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
     idx = models.AutoField(primary_key=True)
-    nickname = models.CharField(max_length=100, blank=True, null=True)
-    user_nm = models.CharField(max_length=50, blank=True, null=True)
-    user_email = models.CharField(unique=True, max_length=100, blank=True, null=True)
-    posting_cnt = models.IntegerField(blank=True, null=True)
-    following_cnt = models.IntegerField(blank=True, null=True)
-    follower_cnt = models.IntegerField(blank=True, null=True)
+    nickname = models.CharField(unique=True,max_length=100, null = True)
+    user_nm = models.CharField(max_length=50, null = True)
+    user_email = models.CharField(unique=True, max_length=100, null = True)
+    posting_cnt = models.IntegerField(blank=True, null=True, default = 0)
+    following_cnt = models.IntegerField(blank=True, null=True, default = 0)
+    follower_cnt = models.IntegerField(blank=True, null=True, default = 0)
     description = models.TextField(blank=True, null=True)
-    age = models.CharField(max_length=45, blank=True, null=True)
-    sex = models.CharField(max_length=45, blank=True, null=True)
+    age = models.DateField(blank=True,null = True)
+    sex = models.CharField(max_length=45, blank=True,null = True)
+    image = models.ImageField(upload_to=date_upload_profile, default='default/default.png')
 
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -100,12 +115,11 @@ class User(AbstractBaseUser):
 
     object = UserManager()
     USERNAME_FIELD = 'user_email'
-    REQUIRED_FIELDS = ['user_id']
+    # REQUIRED_FIELDS = ['user_id']
 
     class Meta:
         managed = False
         db_table = 'user'
-
 
 
 class UserLikeHistory(models.Model):

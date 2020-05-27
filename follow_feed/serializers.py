@@ -12,7 +12,7 @@ class UserPlaceHistorySerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ("idx","nickname","image")
 class UserFollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserFollow

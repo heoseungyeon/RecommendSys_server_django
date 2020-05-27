@@ -17,7 +17,10 @@ def currentPostId():
     return post.idx
 
 def insertUserPlaceHistory(request,post_id):
-    print(request.data)
+    print("request:  ",request.data)
+    #user_id 추가
+    request.data.__setitem__("user_idx",request.user.idx) #request.data에 key,value 추가하고 싶을 때 __setitem__(key,value)
+    request.data.__setitem__("like_cnt",0) #request.data에 key,value 추가하고 싶을 때 __setitem__(key,value)
     serializer = UserPlaceHistorySerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
