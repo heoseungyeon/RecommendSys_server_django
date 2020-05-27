@@ -70,4 +70,3 @@ class UpLoadPosting(APIView):
         return Response(data, status=status.HTTP_201_CREATED)
 
 
-
