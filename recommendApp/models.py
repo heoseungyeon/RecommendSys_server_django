@@ -81,6 +81,7 @@ class UserPlaceHistory(models.Model):
     tag_5 = models.CharField(max_length=45, blank=True, null=True)
     tag_6 = models.CharField(max_length=45, blank=True, null=True)
     rating = models.FloatField(blank=True, null=True)
+    place_name = models.CharField(max_length=150, blank=True, null=True)
 
     class Meta:
         managed = False

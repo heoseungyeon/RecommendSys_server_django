@@ -47,12 +47,15 @@ class UpLoadPosting(APIView):
 
         #Insert to Score
         if check==True:
+            print("check")
             insertScore(request, imageScore, textScore)
+
 
         data= []
         temp=dict()
         temp['check']=check
         data.append(temp)
+        print(data)
 
         return Response(data, status=status.HTTP_201_CREATED)
 
