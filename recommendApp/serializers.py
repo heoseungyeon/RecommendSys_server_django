@@ -6,7 +6,7 @@ from django.db.models import Avg, Max, Min, Sum
 class UserPlaceHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPlaceHistory
-        fields = ('place_id', )
+        fields = ('place_id', 'place_name')
 
 
 class RecommendSerializer(serializers.ModelSerializer) :

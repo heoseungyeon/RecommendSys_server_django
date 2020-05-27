@@ -7,7 +7,7 @@ from pick.models import UserPick
 class RecommendUserPlaceHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPlaceHistory
-        fields = ['place_id']
+        fields = ['place_id', 'place_name']
 
 class UserPlaceHistorySerializer(serializers.ModelSerializer):
     class Meta:

@@ -25,7 +25,7 @@ class MyPageSerializer(serializers.ModelSerializer):
 class UserPlaceHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPlaceHistory
-        fields = ('idx','place_id')
+        fields = ('idx','place_id', 'place_name')
         read_only_fields = ('idx',)
 
 
