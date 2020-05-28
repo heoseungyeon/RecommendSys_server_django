@@ -46,6 +46,7 @@ class CreateFeedActivity(APIView):
         #클라이언트에 보낼 데이터 리스트
         data= []
         #유저의 팔로잉 유저의 게시물 찾기
+        place_data= []
         for place in userplacehistory:
             print(place.user_idx.idx)
             if place.user_idx.idx in follow_lists:
@@ -85,15 +86,15 @@ class CreateFeedActivity(APIView):
                 temp["tag_5"] = place.tag_5
                 temp["tag_6"] = place.tag_6
                 temp["rating"] = place.rating
-                data.append(temp)
+                place_data.append(temp)
         #팔로잉 유저 리스트 response 에 담기
         temp=dict()
+        temp["review_data"] = place_data
         temp["follow_list"] = follow_list
-        data.append(temp)
-        print("data: ", data)
+        print("data: ", temp)
 
 
-        return Response(data, status=status.HTTP_201_CREATED)
+        return Response(temp, status=status.HTTP_201_CREATED)
         #return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 #LikeViews
@@ -122,7 +123,7 @@ class LikeViews(APIView):
         print(valid)
         # result 반환 정보 입력
         result = dict()
-        result["valid"] = valid
+        result["valid"] = str(valid)
         # DB 정보 data 입력
         data = dict()
         data["user_idx"] = int(user_id)
@@ -168,7 +169,8 @@ class ReviewViews(APIView):
 
     def post(self, request, format=None):
         # 클라이언트에 보낼 데이터 리스트
-        data = []
+        data = dict()
+        review_data = []
         posting_id= request.data.get('posting_id')
         #queryset 생성
         posting_reviews = PostingReviews.objects.all().order_by('-date')
@@ -181,8 +183,8 @@ class ReviewViews(APIView):
                 temp["nickname"] = review.user_idx.nickname
                 temp["context"] = review.context
                 temp["date"] = review.date
-                data.append(temp)
-
+                review_data.append(temp)
+        data["review_data"] = review_data
         #데이터 출력해보기
         print("data: ", data)
 

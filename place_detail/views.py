@@ -30,7 +30,8 @@ class CreatePlaceActivity(APIView):
 
         rating=0.0
         userplacehistory = UserPlaceHistory.objects.all()
-        data= []
+        data= dict()
+        place_data = []
         for place in userplacehistory:
             if place.place_id == place_id:
                 print(place)
@@ -55,13 +56,12 @@ class CreatePlaceActivity(APIView):
                     temp["img_url_5"] = place.img_url_5.url
                 else: print("url_5 없네요")
                 rating = rating + float(place.rating)
-                data.append(temp)
+                place_data.append(temp)
                 print(data)
         #serializer = UserPlaceHistorySerializer(data=request.data)
         #if serializer.is_valid():
-        temp = dict()
-        temp["rating"] = rating
-        data.append(temp)
+        data["place_data"]=place_data
+        data["rating"]= rating
         return Response(data, status=status.HTTP_201_CREATED)
         #return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
@@ -94,7 +94,7 @@ class Pick_PlaceActivity(APIView):
         print(valid)
         #result 반환 정보 입력
         result= dict()
-        result["valid"]=valid
+        result["valid"]=str(valid)
         #DB 정보 data 입력
         data = dict()
         data["user_idx"]=int(user_id)
