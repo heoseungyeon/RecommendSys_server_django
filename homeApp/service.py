@@ -233,6 +233,7 @@ def get_home_recommend(request_user):
     if len(image_score) == 0 and len(text_score) == 0:
         user_pt = [0,0]
         print("00 case >> user_pt: ", user_pt)
+        return None
 
     for idx in range(loop):
         distance = list()

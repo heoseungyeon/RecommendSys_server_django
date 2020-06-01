@@ -292,6 +292,7 @@ def getRecommend(request_sentence, request_user):
         print(matching)
         if len(matching) == 0:
             print("nothing matching")
+            return None
 
     elif len(matching_image) == 0 and len(matching_text) >= 1:
 
@@ -348,11 +349,11 @@ def getRecommend(request_sentence, request_user):
     for idx, val in enumerate(other_pt):
         cal.append((others_image[idx].get('user_idx'), euclidean_distance(val)))
     distance = sorted(cal, key=itemgetter(1), reverse = True)
+
     print(distance)
 
-    # user = User.object.get(idx = distance[0][0])
-    #
-    # return user
+    distance = list(set(distance))
+    print("user idx: ", distance)
 
     if len(distance) == 1:
         query_set = User.object.all().filter(Q(idx=distance[0][0]))
@@ -363,10 +364,10 @@ def getRecommend(request_sentence, request_user):
     elif len(distance) == 3:
         query_set = User.object.all().filter(Q(idx=distance[0][0]) | Q(idx=distance[1][0]) | Q(idx=distance[2][0]))
 
-    elif len(recommend_user) == 4:
+    elif len(distance) == 4:
         query_set = User.object.all().filter(Q(idx=distance[0][0]) | Q(idx=distance[1][0]) | Q(idx=distance[2][0]) | Q(idx=distance[3][0]) )
 
-    elif len(recommend_user) == 5:
+    elif len(distance) == 5:
         query_set = User.object.all().filter(Q(idx=distance[0][0]) | Q(idx=distance[1][0]) | Q(idx=distance[2][0]) | Q(idx=distance[3][0]) | Q(idx=distance[4][0]))
 
     else :

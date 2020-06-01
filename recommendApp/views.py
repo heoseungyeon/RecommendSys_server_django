@@ -19,7 +19,22 @@ class TextRecommendAPIView(APIView):
     def post(self, request):
         query_set = getRecommend(request.data.get('recommend'), request.user)
 
-        serializer = RecommendSerializer(query_set, many=True)
+        if query_set is None:
+            print('none')
+            filter = UserPlaceHistory.objects.filter().order_by('-like_cnt').exclude(user_idx=request.user)
+            rows = filter.values('user_idx').distinct()[:5]
+            rows_removed_deduplication = list(
+                {rows['user_idx']: rows for rows in rows}.values())
+            print(rows_removed_deduplication)
+            query = list()
+            for row in rows_removed_deduplication:
+                user = User.object.get(idx=row['user_idx'])
+                query.append(user)
+
+            serializer = RecommendSerializer(query, many=True)
+        else:
+            serializer = RecommendSerializer(query_set, many=True)
+
         print(serializer.data)
         print(type(serializer.data))
         return Response({

@@ -21,7 +21,21 @@ class HomeListAPIView(APIView):
         user = request.user
         query_set = get_home_recommend(user)
 
-        home_serializer = HomeSerializer(query_set, many= True)
+        if query_set is None:
+            print('none')
+            filter = UserPlaceHistory.objects.filter().order_by('-like_cnt').exclude(user_idx=request.user)
+            rows = filter.values('user_idx').distinct()[:5]
+            rows_removed_deduplication = list(
+                {rows['user_idx']: rows for rows in rows}.values())
+            print(rows_removed_deduplication)
+            query = list()
+            for row in rows_removed_deduplication:
+                user = User.object.get(idx=row['user_idx'])
+                query.append(user)
+
+            home_serializer = HomeSerializer(query, many=True)
+        else:
+            home_serializer = HomeSerializer(query_set, many=True)
 
         user_pick = user.home_userpick_set.all()
         pick_serializer = PickPlaceSerializer(user_pick, many=True)
@@ -58,9 +72,23 @@ class SearchListAPIView(APIView):
 
     def get(self, request):
 
-        # user = request.user
-        # query_set = get_home_recommend(user)
-        # home_serializer = HomeSerializer(query_set, many= True)
+        user = request.user
+        query_set = get_home_recommend(user)
+        if query_set is None  :
+            print('none')
+            filter = UserPlaceHistory.objects.filter().order_by('-like_cnt').exclude(user_idx = request.user)
+            rows = filter.values('user_idx').distinct()[:3]
+            rows_removed_deduplication = list(
+                {rows['user_idx']: rows for rows in rows}.values())
+            print(rows_removed_deduplication)
+            query = list()
+            for row in rows_removed_deduplication:
+                user = User.object.get(idx = row['user_idx'])
+                query.append(user)
+
+            home_serializer = HomeSerializer(query, many=True)
+        else :
+            home_serializer = HomeSerializer(query_set, many= True)
 
         # user_pick = user.userpick_set.all()
         # pick_serializer = PickPlaceSerializer(user_pick, many=True)
@@ -80,7 +108,7 @@ class SearchListAPIView(APIView):
 
         return Response({
 
-            # "home_recommendation":home_serializer.data,
+            "home_recommendation":home_serializer.data,
             # "user_pick" : pick_serializer.data,
             "realtime_posting": real_serializer.data,
             "hot_posting": hot_serializer.data,
