@@ -41,7 +41,7 @@ class CreateFeedActivity(APIView):
                 follow_list.append(serializer.data)
                 follow_lists.append(follow.following_idx.idx)
 
-        print(follow_list)
+        print("follow_list:",follow_list)
 
         #클라이언트에 보낼 데이터 리스트
         data= []
@@ -79,12 +79,20 @@ class CreateFeedActivity(APIView):
                     print("url_5 없네요")
                 temp["like_cnt"] = place.like_cnt
                 temp["date"] = place.date
-                temp["tag_1"] = place.tag_1
-                temp["tag_2"] = place.tag_2
-                temp["tag_3"] = place.tag_3
-                temp["tag_4"] = place.tag_4
-                temp["tag_5"] = place.tag_5
-                temp["tag_6"] = place.tag_6
+                if place.tag_1 is not None:
+                    temp["tag_1"] = place.tag_1
+
+                if place.tag_2 is not None:
+                    temp["tag_2"] = place.tag_2
+
+                if place.tag_3 is not None:
+                    temp["tag_3"] = place.tag_3
+                if place.tag_4 is not None:
+                    temp["tag_4"] = place.tag_4
+                if place.tag_5 is not None:
+                    temp["tag_5"] = place.tag_5
+                if place.tag_6 is not None:
+                    temp["tag_6"] = place.tag_6
                 temp["rating"] = place.rating
                 place_data.append(temp)
         #팔로잉 유저 리스트 response 에 담기

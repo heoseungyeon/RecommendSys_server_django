@@ -29,6 +29,7 @@ class CreatePlaceActivity(APIView):
         place_id= request.data.get('place_id')
 
         rating=0.0
+        cnt=0
         userplacehistory = UserPlaceHistory.objects.all()
         data= dict()
         place_data = []
@@ -55,13 +56,33 @@ class CreatePlaceActivity(APIView):
                 if place.img_url_5:
                     temp["img_url_5"] = place.img_url_5.url
                 else: print("url_5 없네요")
+                if place.tag_1 is not None:
+                    temp["tag_1"] = place.tag_1
+
+                if place.tag_2 is not None:
+                    temp["tag_2"] = place.tag_2
+
+                if place.tag_3 is not None:
+                    temp["tag_3"] = place.tag_3
+                if place.tag_4 is not None:
+                    temp["tag_4"] = place.tag_4
+                if place.tag_5 is not None:
+                    temp["tag_5"] = place.tag_5
+                if place.tag_6 is not None:
+                    temp["tag_6"] = place.tag_6
                 rating = rating + float(place.rating)
+                cnt+=1
                 place_data.append(temp)
                 print(data)
         #serializer = UserPlaceHistorySerializer(data=request.data)
         #if serializer.is_valid():
         data["place_data"]=place_data
-        data["rating"]= rating
+        print(cnt)
+        if cnt!=0:
+            data["rating"]= rating//cnt
+        else:
+            data["rating"]= rating
+
         return Response(data, status=status.HTTP_201_CREATED)
         #return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
