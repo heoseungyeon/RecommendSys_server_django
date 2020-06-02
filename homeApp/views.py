@@ -44,8 +44,8 @@ class HomeListAPIView(APIView):
         realtime_reviews = UserPlaceHistory.objects.all().order_by('-date')[:8]
         real_serializer = UserPlaceHistorySerializer(realtime_reviews, many=True)
 
-        hot_reviews = UserPlaceHistory.objects.all().order_by('-like_cnt')[:8]
-        hot_serializer = UserPlaceHistorySerializer(hot_reviews, many=True)
+        # hot_reviews = UserPlaceHistory.objects.all().order_by('-like_cnt')[:8]
+        # hot_serializer = UserPlaceHistorySerializer(hot_reviews, many=True)
 
         category_m = get_random_m()
         category_m_serializer = CategoryImageMSerializer(category_m, many=True)
@@ -58,7 +58,7 @@ class HomeListAPIView(APIView):
             "home_recommendation":home_serializer.data,
             "user_pick" : pick_serializer.data,
             "real_time": real_serializer.data,
-            "hot": hot_serializer.data,
+            # "hot": hot_serializer.data,
             "category_m": category_m_serializer.data,
             "category_s": category_s_serializer.data
 

@@ -62,3 +62,4 @@ class UserPageDetail(APIView):
 
             "userpage" : serializer.data
         })
+
