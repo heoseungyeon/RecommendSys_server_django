@@ -25,7 +25,7 @@ def insertUserPlaceHistory(request,post_id):
     if serializer.is_valid():
         serializer.save()
         return True
-    print(serializer.errors)
+    print("adfaf",serializer.errors)
     return False
 
 def insertScore(request,imageScore,textScore):

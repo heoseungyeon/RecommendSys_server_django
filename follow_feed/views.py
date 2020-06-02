@@ -57,6 +57,8 @@ class CreateFeedActivity(APIView):
                 temp["image"] = place.user_idx.image.url
                 temp["place_id"] = place.place_id
                 temp["context"] = place.context
+                if place.place_name:
+                    temp["place_name"] =place.place_name
                 if place.img_1:
                     temp["img_1"] = place.img_1.url
                 else:
