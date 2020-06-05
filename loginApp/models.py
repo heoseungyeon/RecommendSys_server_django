@@ -37,7 +37,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, nickname, user_email, password=None):
+    def create_superuser(self, nickname, user_email,user_nm, age, sex, password=None):
         user = self.create_user(
             nickname=nickname,
             user_email=self.normalize_email(user_email),
@@ -62,10 +62,10 @@ class User(AbstractBaseUser):
     posting_cnt = models.IntegerField(blank=True, null=True, default = 0)
     following_cnt = models.IntegerField(blank=True, null=True, default = 0)
     follower_cnt = models.IntegerField(blank=True, null=True, default = 0)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True, default = '없음')
     age = models.DateField(null = True)
     sex = models.CharField(max_length=45, null = True)
-    image = models.ImageField(upload_to=date_upload_profile, default='default/default.png')
+    image = models.ImageField(upload_to=date_upload_profile, default='/default/default.png')
 
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -76,6 +76,6 @@ class User(AbstractBaseUser):
     # REQUIRED_FIELDS = ['user_id']
 
     class Meta:
-        managed = False
+
         db_table = 'user'
 

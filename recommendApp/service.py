@@ -19,10 +19,6 @@ def test():
 
     text = CategoryTextS.objects.all()
     image = CategoryImageS.objects.all()
-    #
-    # print("munjang",munjang)
-    # print("image",image)
-    # print("text",text)
 
     for ts in image:
         if ts.ctgr_name in sentence:
@@ -208,37 +204,37 @@ def getLargeKeyword(request_sentence, user):
 #     return matching
 
 
-def getUserImageScore(image_level, image_cg_idx, user_idx):
-
-    if image_level == 'S':
-        user = User.object.get(idx=user_idx)
-        user_image = user.imagesscore_set.filter(image_ctgr_idx=image_cg_idx).aggregate(Avg('score'))
-        print(user_image)
-
-    else:
-        user = User.object.get(idx=user_idx)
-        user_image = user.imagemscore_set.filter(image_ctgr_idx=image_cg_idx).aggregate(Avg('score'))
-
-    if user_image.get('score__avg') is None:
-        print("user image score is none")
-        return 0
-    return user_image.get('score__avg')
-
-
-def getUserTextScore(text_level, text_cg_idx, user_idx):
-
-    if text_level == 'S':
-        user = User.object.get(idx=user_idx)
-        user_text = user.textsscore_set.filter(text_ctgr_idx=text_cg_idx).aggregate(Avg('score'))
-
-    else:
-        user = User.object.get(idx=user_idx)
-        user_text = user.textmscore_set.filter(text_ctgr_idx=text_cg_idx).aggregate(Avg('score'))
-
-    if user_text.get('score__avg') is None:
-        print("user text score is none")
-        return 0
-    return user_text.get('score__avg')
+# def getUserImageScore(image_level, image_cg_idx, user_idx):
+#
+#     if image_level == 'S':
+#         user = User.object.get(idx=user_idx)
+#         user_image = user.imagesscore_set.filter(image_ctgr_idx=image_cg_idx).aggregate(Avg('score'))
+#         print(user_image)
+#
+#     else:
+#         user = User.object.get(idx=user_idx)
+#         user_image = user.imagemscore_set.filter(image_ctgr_idx=image_cg_idx).aggregate(Avg('score'))
+#
+#     if user_image.get('score__avg') is None:
+#         print("user image score is none")
+#         return 0
+#     return user_image.get('score__avg')
+#
+#
+# def getUserTextScore(text_level, text_cg_idx, user_idx):
+#
+#     if text_level == 'S':
+#         user = User.object.get(idx=user_idx)
+#         user_text = user.textsscore_set.filter(text_ctgr_idx=text_cg_idx).aggregate(Avg('score'))
+#
+#     else:
+#         user = User.object.get(idx=user_idx)
+#         user_text = user.textmscore_set.filter(text_ctgr_idx=text_cg_idx).aggregate(Avg('score'))
+#
+#     if user_text.get('score__avg') is None:
+#         print("user text score is none")
+#         return 0
+#     return user_text.get('score__avg')
 
 
 def getOtherImageScoreList(image_level, image_cg_idx, user_idx):
@@ -286,6 +282,7 @@ def getRecommend(request_sentence, request_user):
     print(matching_image)
     print(matching_text)
 
+    # user_pt  = [0,0]
     if len(matching_image) == 0 and len(matching_text) == 0:
 
         matching = getLargeKeyword(keyword_list, user)
@@ -298,8 +295,6 @@ def getRecommend(request_sentence, request_user):
 
         text_level = matching_text[0][0]
         text_cg_idx = matching_text[0][2]
-        user_pt = [0, getUserTextScore(text_level, text_cg_idx, user_idx)]
-        print("user pt : ", user_pt)
 
         others_text = getOtherTextScoreList(text_level, text_cg_idx, user_idx)
         other_pt = list()
@@ -312,8 +307,6 @@ def getRecommend(request_sentence, request_user):
 
         image_level = matching_image[0][0]
         image_cg_idx = matching_image[0][2]
-        user_pt = [getUserImageScore(image_level, image_cg_idx, user_idx), 0]
-        print("user pt : ", user_pt)
 
         others_image = getOtherImageScoreList(image_level, image_cg_idx, user_idx)
         other_pt = list()
@@ -329,11 +322,6 @@ def getRecommend(request_sentence, request_user):
         text_level = matching_text[0][0]
         text_cg_idx = matching_text[0][2]
 
-        user_pt = [getUserImageScore(image_level, image_cg_idx, user_idx),
-                   getUserTextScore(text_level, text_cg_idx, user_idx)]
-
-        print("user pt : ", user_pt)
-
         others_image = getOtherImageScoreList(image_level, image_cg_idx, user_idx)
         others_text = getOtherTextScoreList(text_level, text_cg_idx, user_idx)
 
@@ -348,39 +336,60 @@ def getRecommend(request_sentence, request_user):
     cal = list()
     for idx, val in enumerate(other_pt):
         cal.append((others_image[idx].get('user_idx'), euclidean_distance(val)))
-    distance = sorted(cal, key=itemgetter(1), reverse = True)
+
+    distance = cal
+    distance = list(set(distance))
+    distance = sorted(distance, key=itemgetter(1), reverse = True)
 
     print(distance)
-
-    distance = list(set(distance))
     print("user idx: ", distance)
 
-    if len(distance) == 1:
-        query_set = User.object.all().filter(Q(idx=distance[0][0]))
+    user_list = list()
+    for val in distance:
+        user_list.append(User.object.get(idx = val[0]))
+        if len(user_list) == 5:
+            break;
 
-    elif len(distance) == 2:
-        query_set = User.object.all().filter(Q(idx=distance[0][0]) | Q(idx=distance[1][0]))
-
-    elif len(distance) == 3:
-        query_set = User.object.all().filter(Q(idx=distance[0][0]) | Q(idx=distance[1][0]) | Q(idx=distance[2][0]))
-
-    elif len(distance) == 4:
-        query_set = User.object.all().filter(Q(idx=distance[0][0]) | Q(idx=distance[1][0]) | Q(idx=distance[2][0]) | Q(idx=distance[3][0]) )
-
-    elif len(distance) == 5:
-        query_set = User.object.all().filter(Q(idx=distance[0][0]) | Q(idx=distance[1][0]) | Q(idx=distance[2][0]) | Q(idx=distance[3][0]) | Q(idx=distance[4][0]))
-
-    else :
-        print ("more than five")
-        query_set = User.object.all().filter(
-            Q(idx=distance[0][0]) | Q(idx=distance[1][0]) | Q(idx=distance[2][0]) | Q(idx=distance[3][0]) | Q(
-                idx=distance[4][0]))
+    print(user_list)
+    return user_list
 
 
-    print(query_set)
-    return query_set
+def imgae_search(results, user):
 
+    label = results[0]['label']
+    accuracy = results[0]['confidence']
+    try:
+        image_s = CategoryImageS.objects.get(ctgr_name_en = label)
+        other_image_score = getOtherImageScoreList('S', image_s, user)
+        ImageSHistory.objects.create(user_idx=user, ctgr_idx=image_s)
 
+    except CategoryImageS.DoesNotExist:
+        print("제공하지 않는 품목")
+        return None
+    print('matching_image_list : ', other_image_score)
+
+    # user_pt = [0,0]
+    other_pt = list()
+    for image in other_image_score:
+        print("other pt: ", [image.get('avg_score'), 0])
+        other_pt.append([image.get('avg_score'), 0])
+
+    cal = list()
+    for idx, val in enumerate(other_pt):
+        cal.append((other_image_score[idx].get('user_idx'), euclidean_distance(val)))
+
+    distance = cal
+    distance = list(set(distance))
+    distance = sorted(distance, key=itemgetter(1), reverse=True)
+    print("distance: ", distance)
+
+    user_list = list()
+    for val in distance:
+        user_list.append(User.object.get(idx = val[0]))
+        if len(user_list) == 5:
+            break;
+
+    return user_list
 
 def euclidean_distance(other_pt):
     distance = 0

@@ -39,4 +39,4 @@ class HomeSerializer(serializers.ModelSerializer) :
 
     class Meta:
         model = User
-        fields = ('idx', 'nickname', 'recommend_place')
+        fields = ('idx', 'nickname', 'image','recommend_place',)

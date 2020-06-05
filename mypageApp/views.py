@@ -23,7 +23,7 @@ class MyPageDetail(APIView):
         print(request.data)
         serializer = MyPageSerializer(request.user)
         return Response({
-           "mypage": serializer.data
+            "mypage": serializer.data
         })
 
     def put(self, request, format=None):
@@ -63,3 +63,98 @@ class UserPageDetail(APIView):
             "userpage" : serializer.data
         })
 
+class MyPostingList(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    def get(self, request, format=None):
+        posting = UserPlaceHistory.objects.filter(user_idx = request.user)
+        serializer = UserPlaceHistorySerializer(posting, many=True)
+
+        return Response({
+
+            "my_posting" : serializer.data
+        })
+
+
+class MyFollowList(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    def get(self, request, format=None):
+
+        user = request.user
+        serializer = UserFollowSerializer(user)
+
+        return Response({
+
+            "follow" : serializer.data
+        })
+
+
+
+
+class UserFollowList(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    def get(self, request, nickname, format=None):
+
+        user = User.object.get(nickname = nickname)
+        serializer = UserFollowSerializer(user)
+
+        # 포스팅 썸네일 = place_id 일단,, 이거 바꿔야함 image필드로
+        return Response({
+
+            "follow" : serializer.data
+        })
+
+
+
+
+class ManageFollow(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    def post(self, request):
+        user = request.user
+        other_user = User.object.get(nickname=request.data['nickname'])
+
+        try:
+            follow = UserFollow.objects.get(user_idx=user, following_idx=other_user)
+            return Response({
+                "code" : 101,
+                "msg" : "이미 팔로우입니다."
+            })
+        except UserFollow.DoesNotExist:
+            follow = UserFollow.objects.create(user_idx = user, following_idx = other_user)
+            follow.save()
+
+            return Response({
+                "code" : 100,
+                "msg" : "팔로우 성공"
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, nickname):
+        user = request.user
+        other_user = User.object.get(nickname=nickname)
+        follow = UserFollow.objects.get(user_idx = user, following_idx = other_user)
+        follow.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
