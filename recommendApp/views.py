@@ -60,7 +60,8 @@ class ImageRecommendAPIView(APIView):
                 return Response(status=status.HTTP_204_NO_CONTENT)
 
             query_set = imgae_search(results, request.user)
-            if query_set is None:
+            print(len(query_set))
+            if query_set is None or len(query_set) == 0:
                 print('none')
                 filter = UserPlaceHistory.objects.filter().order_by('-like_cnt').exclude(user_idx=request.user)
                 rows = filter.values('user_idx').distinct()[:5]

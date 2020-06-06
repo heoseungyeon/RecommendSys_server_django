@@ -398,7 +398,7 @@ def imgae_search(results, user):
         user_list.append(User.object.get(idx = val[0]))
         if len(user_list) == 5:
             break;
-
+    print(user_list)
     return user_list
 
 def euclidean_distance(other_pt):
