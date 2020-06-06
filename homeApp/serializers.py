@@ -15,7 +15,7 @@ class UserPlaceHistorySerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=False, source='user_idx.image')
     class Meta:
         model = UserPlaceHistory
-        fields = ('idx','image', 'place_id', 'context', 'img_url_1', 'img_url_2', 'img_url_3', 'img_url_4', 'img_url_5', 'date', 'tag_1', 'tag_2', 'tag_3', 'tag_4', 'tag_5', 'tag_6', 'place_name', 'user_idx', 'nickname')
+        fields = ('idx','image', 'place_id', 'context', 'img_url_1', 'img_url_2', 'img_url_3', 'img_url_4', 'img_url_5', 'date', 'tag_1', 'tag_2', 'tag_3', 'tag_4', 'tag_5', 'tag_6', 'place_name', 'user_idx', 'nickname', 'rating')
 
 
 class PickPlaceSerializer(serializers.ModelSerializer):
