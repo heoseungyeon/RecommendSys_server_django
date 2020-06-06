@@ -5,7 +5,7 @@ from operator import itemgetter
 
 def load_yolo():
 
-    net = cv2.dnn.readNet("cfg/yolov3-416-nolle_18000.weights", "cfg/yolov3-416-nolle.cfg")
+    net = cv2.dnn.readNet("cfg/yolov3-416-nolle_17000.weights", "cfg/yolov3-416-nolle.cfg")
     classes = []
     with open("./cfg/obj-nolle.names", "r") as f:
         classes = [line.strip() for line in f.readlines()]
