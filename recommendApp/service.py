@@ -355,17 +355,18 @@ def getRecommend(request_sentence, request_user):
 
 
 def imgae_search(results, user):
-
-    label = results[0]['label']
-    accuracy = results[0]['confidence']
+    #
+    # label = results[0]['label']
+    # accuracy = results[0]['confidence']
     other_image_socre_list = list()
     try:
-        image_s = CategoryImageS.objects.filter(ctgr_name_en = label)
-        print(image_s)
-        for s in image_s:
-            other_image_score = getOtherImageScoreList('S', s, user)
-            other_image_socre_list.append(other_image_score)
-            ImageSHistory.objects.create(user_idx=user, ctgr_idx=s)
+        for result in results :
+            image_s = CategoryImageS.objects.filter(ctgr_name_en = result['label'])
+            print(image_s)
+            for s in image_s:
+                other_image_score = getOtherImageScoreList('S', s, user)
+                other_image_socre_list.append(other_image_score)
+                ImageSHistory.objects.create(user_idx=user, ctgr_idx=s)
 
     except CategoryImageS.DoesNotExist:
         print("제공하지 않는 품목")
