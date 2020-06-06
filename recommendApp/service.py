@@ -358,25 +358,34 @@ def imgae_search(results, user):
 
     label = results[0]['label']
     accuracy = results[0]['confidence']
+    other_image_socre_list = list()
     try:
-        image_s = CategoryImageS.objects.get(ctgr_name_en = label)
-        other_image_score = getOtherImageScoreList('S', image_s, user)
-        ImageSHistory.objects.create(user_idx=user, ctgr_idx=image_s)
+        image_s = CategoryImageS.objects.filter(ctgr_name_en = label)
+        print(image_s)
+        for s in image_s:
+            other_image_score = getOtherImageScoreList('S', s, user)
+            other_image_socre_list.append(other_image_score)
+            ImageSHistory.objects.create(user_idx=user, ctgr_idx=s)
 
     except CategoryImageS.DoesNotExist:
         print("제공하지 않는 품목")
         return None
-    print('matching_image_list : ', other_image_score)
+    print('matching_image_list : ', other_image_socre_list)
 
     # user_pt = [0,0]
     other_pt = list()
-    for image in other_image_score:
-        print("other pt: ", [image.get('avg_score'), 0])
-        other_pt.append([image.get('avg_score'), 0])
-
+    user_idx = list()
     cal = list()
+    for other_image_score in other_image_socre_list:
+        for image in other_image_score:
+            print("matching pt: ", [image.get('avg_score'), 0])
+            other_pt.append([image.get('avg_score'), 0])
+            user_idx.append(image.get('user_idx'))
+
+    print('other pt: ',other_pt)
+    print('user_idx: ',user_idx)
     for idx, val in enumerate(other_pt):
-        cal.append((other_image_score[idx].get('user_idx'), euclidean_distance(val)))
+        cal.append((user_idx[idx], euclidean_distance(val)))
 
     distance = cal
     distance = list(set(distance))
