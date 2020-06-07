@@ -146,6 +146,11 @@ class ManageFollow(APIView):
             follow = UserFollow.objects.create(user_idx = user, following_idx = other_user)
             follow.save()
 
+            user.following_cnt = user.following_cnt + 1
+            other_user.follower_cnt = other_user.follower_cnt + 1
+            user.save()
+            other_user.save()
+
             return Response({
                 "code" : 100,
                 "msg" : "팔로우 성공"
@@ -155,6 +160,18 @@ class ManageFollow(APIView):
     def delete(self, request, nickname):
         user = request.user
         other_user = User.object.get(nickname=nickname)
-        follow = UserFollow.objects.get(user_idx = user, following_idx = other_user)
-        follow.delete()
+        try:
+            follow = UserFollow.objects.get(user_idx = user, following_idx = other_user)
+            follow.delete()
+            user.following_cnt = user.following_cnt - 1
+            other_user.follower_cnt = other_user.follower_cnt - 1
+            user.save()
+            other_user.save()
+
+        except UserFollow.DoesNotExist:
+            return Response({
+                "code" : 101,
+                "msg" : "팔로우 상태가 아닙니다."
+            })
+
         return Response(status=status.HTTP_204_NO_CONTENT)
