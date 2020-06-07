@@ -6,10 +6,12 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+#from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.utils import timezone
 import os
 from uuid import uuid4
+
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 def date_upload_profile(instance, filename):
     # upload_to="%Y/%m/%d" 처럼 날짜로 세분화
