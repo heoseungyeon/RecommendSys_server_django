@@ -287,6 +287,8 @@ def get_home_recommend(request_user):
                 cal.append((others_image[idx].get('user_idx'), euclidean_distance(val, user_pt)))
             # distance += sorted(cal, key=operator.itemgetter(1))
             distance += cal
+
+            # distance = list(set(distance))
             print("distance : ", distance)
 
         else :
@@ -295,19 +297,23 @@ def get_home_recommend(request_user):
             # distance += sorted(cal, key=operator.itemgetter(1), reverse = True)
             # print("sorted : ", distance)
             distance += cal
+
+            # distance = list(set(distance))
             print("distance : ", distance)
+
+    distance = list(set(map(tuple, distance)))
+    print('dp: ', distance)
 
     distance = sorted(distance, key=operator.itemgetter(1), reverse=True)
     print("sorted : ", distance)
+
+
     for val in distance:
         recommend_user.append(User.object.get(idx=val[0]))
         if len(recommend_user) == 5:
             print('stop')
             break
 
-    print(recommend_user)
-    recommend_user = list(set(recommend_user))
+    # recommend_user = list(set(recommend_user))
     print("user idx: ", recommend_user)
-
-    print(recommend_user)
     return recommend_user

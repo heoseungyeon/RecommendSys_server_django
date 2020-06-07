@@ -35,8 +35,6 @@ class TextRecommendAPIView(APIView):
         else:
             serializer = RecommendSerializer(query_set, many=True)
 
-        print(serializer.data)
-        print(type(serializer.data))
         return Response({
             "recommendation": serializer.data
         })

@@ -341,7 +341,7 @@ def getRecommend(request_sentence, request_user):
     distance = list(set(distance))
     distance = sorted(distance, key=itemgetter(1), reverse = True)
 
-    print(distance)
+    print('distance', distance)
     print("user idx: ", distance)
 
     user_list = list()
