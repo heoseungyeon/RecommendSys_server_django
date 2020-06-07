@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from posting.services import *
+from recommendApp.detect import *
 #from .darkflow import ImageDetection
 import json
 
@@ -50,18 +51,52 @@ class UpLoadPosting(APIView):
         print(post_id)#test
         #imageScore=AnalyzeImage(post_id)
         #textSocre=AnalyzeText(post_id)
+
+        check = True
+
+        # user_id 추가
+        request.data.__setitem__("user_idx",
+                                 request.user.idx)  # request.data에 key,value 추가하고 싶을 때 __setitem__(key,value)
+        request.data.__setitem__("like_cnt", 0)  # request.data에 key,value 추가하고 싶을 때 __setitem__(key,value)
+        serializer = UserPlaceHistorySerializer(data=request.data)
+
+        imageResults = []
         imageScore = dict()
         textScore = dict()
 
+        if serializer.is_valid():
+            serializer.save()
+            if serializer.data['img_1']:
+                imageResults.append(image_detect(serializer.data['img_1']))
+            if serializer.data['img_2']:
+                imageResults.append(image_detect(serializer.data['img_2']))
+            if serializer.data['img_3']:
+                imageResults.append(image_detect(serializer.data['img_3']))
+            if serializer.data['img_4']:
+                imageResults.append(image_detect(serializer.data['img_4']))
+            if serializer.data['img_5']:
+                imageResults.append(image_detect(serializer.data['img_5']))
+        print(imageResults)
+
+        for result in imageResults:
+            if len(result) !=0:
+                for data in result:
+                    imageScore[data.get('label')] = data.get('confidence')
+                    insertImageScore(request,imageScore)
+                    imageScore.clear()
+
+
+
+
         #테스트
-        imageScore['칼국수']=1
+        # imageScore['칼국수']=1
         textScore['매콤한']=1
         #Insert to UserPlaceHistory
-        check=insertUserPlaceHistory(request,post_id)
+        #check=insertUserPlaceHistory(request,post_id)
 
         #Insert to Score
-        if check==True:
-            insertScore(request, imageScore, textScore)
+        # if check==True:
+        #     insertScore(request, imageScore, textScore)
 
         data=dict()
         data['check']=str(check)

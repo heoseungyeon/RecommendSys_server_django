@@ -193,6 +193,7 @@ class ReviewViews(APIView):
                 temp["nickname"] = review.user_idx.nickname
                 temp["context"] = review.context
                 temp["date"] = review.date
+                temp["image"] = review.user_idx.image.url
                 review_data.append(temp)
         data["review_data"] = review_data
         #데이터 출력해보기

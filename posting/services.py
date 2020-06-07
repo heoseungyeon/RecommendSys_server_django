@@ -28,14 +28,51 @@ def insertUserPlaceHistory(request,post_id):
     print("adfaf",serializer.errors)
     return False
 
-def insertScore(request,imageScore,textScore):
-    user_id = request.data.get('user_idx')
+def insertTextScore(request,textScore):
+    user_id = request.user.idx
+
+    # TextScoreUpdate
+    for textKey in textScore.keys():
+        categoryS = CategoryTextS.objects.all()
+        for category in categoryS:
+            if category.ctgr_name == textKey:
+                print("발견2")
+                small_id = category.ctgr_id
+                large_id = category.large_id.ctgr_lid
+                middle_id = category.middle_id.ctgr_id
+                # largeScore Update
+                data = dict()
+
+                # MiddleScore Update
+                data.clear()
+                data['user_idx'] = user_id
+                data['text_ctgr_idx'] = middle_id
+                data['score'] = textScore.get(textKey)
+                data['posting_idx'] = currentPostId()
+                print("large_image:", data)
+                serializer = TextMScoreSerializer(data=data)
+                if serializer.is_valid():
+                    serializer.save()
+                # SmallScore Update
+                data.clear()
+                data['user_idx'] = user_id
+                data['text_ctgr_idx'] = small_id
+                data['score'] = textScore.get(textKey)
+                data['posting_idx'] = currentPostId()
+                print("large_image:", data)
+                serializer = TextSScoreSerializer(data=data)
+                if serializer.is_valid():
+                    serializer.save()
+
+def insertImageScore(request,imageScore):
+    user_id = request.user.idx
 
     #imageScoreUpdate
     for imageKey in imageScore.keys():
         categoryS = CategoryImageS.objects.all()
+        valid = []
         for category in categoryS:
-            if category.ctgr_name == imageKey:
+            if category.ctgr_name_en == imageKey:
                 print("발견")
                 small_id = category.ctgr_sid
                 large_id = category.large_id.large_id.ctgr_lid
@@ -43,14 +80,7 @@ def insertScore(request,imageScore,textScore):
                 print(large_id,middle_id)
                 #largeScore Update
                 data=dict()
-                data['user_idx']=user_id
-                data['ctgr_idx']=large_id
-                data['score']=imageScore.get(imageKey)
-                data['posting_idx']=currentPostId()
-                print("large_image:",data)
-                serializer = UserLScoreSerializer(data=data)
-                if serializer.is_valid():
-                    serializer.save()
+
                 #MiddleScore Update
                 data.clear()
                 data['user_idx']=user_id
@@ -63,55 +93,19 @@ def insertScore(request,imageScore,textScore):
                     serializer.save()
                 #SmallScore Update
                 data.clear()
-                data['user_idx']=user_id
-                data['image_ctgr_idx']=small_id
-                data['score']=imageScore.get(imageKey)
-                data['posting_idx']=currentPostId()
-                print("small_image:", data)
-                serializer = ImageSScoreSerializer(data=data)
-                if serializer.is_valid():
-                    print("valid")
-                    serializer.save()
+                if imageKey not in valid:
+                    data['user_idx']=user_id
+                    data['image_ctgr_idx']=small_id
+                    data['score']=imageScore.get(imageKey)
+                    data['posting_idx']=currentPostId()
+                    print("small_image:", data)
+                    serializer = ImageSScoreSerializer(data=data)
+                    if serializer.is_valid():
+                        print("valid")
+                        serializer.save()
+                        valid.append(imageKey)
 
-    #TextScoreUpdate
-    for textKey in textScore.keys():
-        categoryS = CategoryTextS.objects.all()
-        for category in categoryS:
-            if category.ctgr_name == textKey:
-                print("발견2")
-                small_id = category.ctgr_id
-                large_id = category.large_id.ctgr_lid
-                middle_id = category.middle_id.ctgr_id
-                #largeScore Update
-                data=dict()
-                data['user_idx']=user_id
-                data['ctgr_idx']=large_id
-                data['score']=textScore.get(textKey)
-                data['posting_idx']=currentPostId()
-                print("large_image:", data)
-                serializer = UserLScoreSerializer(data=data)
-                if serializer.is_valid():
-                    serializer.save()
-                #MiddleScore Update
-                data.clear()
-                data['user_idx']=user_id
-                data['text_ctgr_idx']=middle_id
-                data['score']=textScore.get(textKey)
-                data['posting_idx']=currentPostId()
-                print("large_image:", data)
-                serializer = TextMScoreSerializer(data=data)
-                if serializer.is_valid():
-                    serializer.save()
-                #SmallScore Update
-                data.clear()
-                data['user_idx']=user_id
-                data['text_ctgr_idx']=small_id
-                data['score']=textScore.get(textKey)
-                data['posting_idx']=currentPostId()
-                print("large_image:", data)
-                serializer = TextSScoreSerializer(data=data)
-                if serializer.is_valid():
-                    serializer.save()
+
 
 
 

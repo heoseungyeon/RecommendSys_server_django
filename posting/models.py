@@ -236,6 +236,7 @@ class CategoryImageS(models.Model):
     ctgr_name = models.CharField(max_length=45)
     large_id = models.ForeignKey(CategoryImageM, models.DO_NOTHING,db_column='large_id',related_name='large_id_imageS', blank=True, null=True)
     middle_id = models.ForeignKey(CategoryImageM, models.DO_NOTHING,db_column='middle_id',related_name='middle_id_imageS', blank=True, null=True)
+    ctgr_name_en = models.CharField(max_length=45)
 
     class Meta:
         managed = False
