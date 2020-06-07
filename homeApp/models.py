@@ -3,7 +3,15 @@ from loginApp.models import User
 from recommendApp.models import *
 
 # Create your models here.
+class UserSearchHistory(models.Model):
+    idx = models.AutoField(primary_key=True)
+    user_idx = models.ForeignKey('User', models.DO_NOTHING, db_column='user_idx', blank=True, null=True)
+    text = models.CharField(max_length=1000, blank=True, null=True)
+    date = models.DateTimeField(blank=True, null=True)
 
+    class Meta:
+        managed = False
+        db_table = 'user_search_history'
 
 class UserPick(models.Model):
     idx = models.AutoField(primary_key=True)
