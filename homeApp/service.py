@@ -178,7 +178,7 @@ def getOtherTextScoreList(text_level, text_cg_idx, user_idx):
         print("doesnotexist")
 
 
-def pearson_similarity(other_pt , user_pt):
+def pearson_similarity(other_pt , user_pt, user_idx):
 
     lst = other_pt
     lst.insert(0, user_pt)
@@ -187,13 +187,16 @@ def pearson_similarity(other_pt , user_pt):
 
     corr =df.corr(method = 'pearson')
     corr.fillna(0)
+
     index_list = corr[0].index.tolist()
+
     value_list = corr[0].fillna(0).values.tolist()
+
     return_list = list()
-    length = len(index_list)
+    length = len(value_list)
     for i in range(1, length) :
-        return_list.append([ index_list[i],value_list[i] ])
-    print(return_list)
+        return_list.append([user_idx[i-1], value_list[i]])
+    print('return pearson: ', return_list)
     return return_list
 
 
@@ -219,6 +222,8 @@ def get_home_recommend(request_user):
     text_score = sorted(text_score, key=itemgetter('avg_score'), reverse=True)
     print("sorted text score : ", text_score)
 
+    print('len image score: ', len(image_score))
+    print('len text score: ', len(text_score))
 
     loop = 0
     if len(image_score) == 0 and len(text_score) == 0:
@@ -241,65 +246,87 @@ def get_home_recommend(request_user):
     other_pt = list()
     recommend_user = list()
     distance = list()
+    user_idx = list()
     for idx in range(loop):
 
         if len(image_score) == 0 and len(text_score) >= 1:
             t_score = text_score[idx]
+            print('t_score: ', t_score)
+
             user_pt = [0, t_score['avg_score']]
             print("01 case >> user_pt: ", user_pt)
             others_text = getOtherTextScoreList(t_score['level'], t_score['text_ctgr_idx'], request_user.idx)
+            print('others_text', others_text)
             for text in others_text:
 
                 other_pt.append([0, text.get('avg_score')])
                 print("other pt: ", [0, text.get('avg_score')])
+                user_idx.append(text.get('user_idx'))
 
         elif len(image_score) >= 1 and len(text_score) == 0:
             i_score = image_score[idx]
+            print('i_score: ', i_score)
+
             user_pt = [i_score['avg_score'], 0]
             print("10 case >> user_pt: ", user_pt)
             others_image = getOtherImageScoreList(i_score['level'], i_score['image_ctgr_idx'],
                                                   request_user.idx)
+            print('others_image', others_image)
             for image in others_image:
 
                 other_pt.append([image.get('avg_score'), 0])
                 print("other pt: ", [image.get('avg_score'), 0])
+                user_idx.append(image.get('user_idx'))
         else:
             t_score = text_score[idx]
             i_score = image_score[idx]
+            print('i_score: ', i_score)
+            print('t_score: ', t_score)
+
+
             user_pt = [i_score['avg_score'], t_score['avg_score']]
             print("11 case >> user_pt: ", user_pt)
 
             others_image = getOtherImageScoreList(i_score['level'], i_score['image_ctgr_idx'], request_user.idx)
             others_text = getOtherTextScoreList(t_score['level'], t_score['text_ctgr_idx'], request_user.idx)
 
+            print('others_text', others_text)
+            print('others_image', others_image)
             for image in others_image:
                 for text in others_text:
                     if image.get('user_idx') == text.get('user_idx'):
                         print("find : ", image.get('user_idx'), ", ", text.get('user_idx'))
                         other_pt.append([image.get('avg_score'), text.get('avg_score')])
                         print("other pt: ", [image.get('avg_score'), text.get('avg_score')])
+                        user_idx.append(image.get('user_idx'))
 
-        print("other: ", other_pt)
-        cal = list()
-        if user_pt == [0,0]:
-            print("euclidean_distance")
-            for idx, val in enumerate(other_pt):
-                cal.append((others_image[idx].get('user_idx'), euclidean_distance(val, user_pt)))
-            # distance += sorted(cal, key=operator.itemgetter(1))
-            distance += cal
 
-            # distance = list(set(distance))
-            print("distance : ", distance)
+    print('user_pt', user_pt)
 
-        else :
-            print("pearson_similarity")
-            cal = pearson_similarity(other_pt, user_pt)
-            # distance += sorted(cal, key=operator.itemgetter(1), reverse = True)
-            # print("sorted : ", distance)
-            distance += cal
+    print('other idx: ', user_idx)
+    print('other idx len: ', len(user_idx))
+    print("other: ", other_pt)
+    print('other pt len: ', len(other_pt))
+    cal = list()
+    if user_pt == [0,0]:
+        print("euclidean_distance")
+        for idx, val in enumerate(other_pt):
+            cal.append((others_image[idx].get('user_idx'), euclidean_distance(val, user_pt)))
+        # distance += sorted(cal, key=operator.itemgetter(1))
+        distance += cal
 
-            # distance = list(set(distance))
-            print("distance : ", distance)
+        # distance = list(set(distance))
+        print("distance : ", distance)
+
+    else :
+        print("pearson_similarity")
+        cal = pearson_similarity(other_pt, user_pt, user_idx)
+        # distance += sorted(cal, key=operator.itemgetter(1), reverse = True)
+        # print("sorted : ", distance)
+        distance += cal
+
+        # distance = list(set(distance))
+        print("distance : ", distance)
 
     distance = list(set(map(tuple, distance)))
     print('dp: ', distance)

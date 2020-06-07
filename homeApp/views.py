@@ -21,7 +21,7 @@ class HomeListAPIView(APIView):
         user = request.user
         query_set = get_home_recommend(user)
 
-        if query_set is None:
+        if query_set is None or len(query_set) == 0:
             print('none')
             filter = UserPlaceHistory.objects.filter().order_by('-like_cnt').exclude(user_idx=request.user)
             rows = filter.values('user_idx').distinct()[:5]
@@ -105,10 +105,7 @@ class SearchListAPIView(APIView):
         category_s = get_random_s()
         category_s_serializer = CategoryImageSSerializer(category_s, many= True)
 
-        search_history = UserSearchHistory.objects
-        filter = search_history.filter()
-        rows = filter.values('text').distinct()
-        print(rows)
+
         return Response({
 
             "home_recommendation":home_serializer.data,
@@ -116,7 +113,6 @@ class SearchListAPIView(APIView):
             "realtime_posting": real_serializer.data,
             "hot_posting": hot_serializer.data,
             "category_m": category_m_serializer.data,
-            "category_s": category_s_serializer.data,
-            "search_history": rows,
+            "category_s": category_s_serializer.data
 
         })

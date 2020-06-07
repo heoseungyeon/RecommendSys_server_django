@@ -132,15 +132,21 @@ class ManageFollow(APIView):
         permissions.IsAuthenticated,
     ]
 
-    def post(self, request):
+    def get(self, request,nickname):
         user = request.user
-        other_user = User.object.get(nickname=request.data['nickname'])
+        other_user = User.object.get(nickname=nickname)
 
         try:
             follow = UserFollow.objects.get(user_idx=user, following_idx=other_user)
+            follow = UserFollow.objects.get(user_idx = user, following_idx = other_user)
+            follow.delete()
+            user.following_cnt = user.following_cnt - 1
+            other_user.follower_cnt = other_user.follower_cnt - 1
+            user.save()
+            other_user.save()
             return Response({
                 "code" : 101,
-                "msg" : "이미 팔로우입니다."
+                "msg" : "팔로우 삭제"
             })
         except UserFollow.DoesNotExist:
             follow = UserFollow.objects.create(user_idx = user, following_idx = other_user)
@@ -157,21 +163,21 @@ class ManageFollow(APIView):
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, nickname):
-        user = request.user
-        other_user = User.object.get(nickname=nickname)
-        try:
-            follow = UserFollow.objects.get(user_idx = user, following_idx = other_user)
-            follow.delete()
-            user.following_cnt = user.following_cnt - 1
-            other_user.follower_cnt = other_user.follower_cnt - 1
-            user.save()
-            other_user.save()
-
-        except UserFollow.DoesNotExist:
-            return Response({
-                "code" : 101,
-                "msg" : "팔로우 상태가 아닙니다."
-            })
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    # def delete(self, request, nickname):
+    #     user = request.user
+    #     other_user = User.object.get(nickname=nickname)
+    #     try:
+    #         follow = UserFollow.objects.get(user_idx = user, following_idx = other_user)
+    #         follow.delete()
+    #         user.following_cnt = user.following_cnt - 1
+    #         other_user.follower_cnt = other_user.follower_cnt - 1
+    #         user.save()
+    #         other_user.save()
+    #
+    #     except UserFollow.DoesNotExist:
+    #         return Response({
+    #             "code" : 101,
+    #             "msg" : "팔로우 상태가 아닙니다."
+    #         })
+    #
+    #     return Response(status=status.HTTP_204_NO_CONTENT)

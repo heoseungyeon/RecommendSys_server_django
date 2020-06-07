@@ -8,6 +8,11 @@ class UserPlaceHistorySerializer(serializers.ModelSerializer):
         model = UserPlaceHistory
         fields = ('place_id', 'place_name')
 
+class UserPlaceHistoryDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserPlaceHistory
+        fields = '__all__'
+
 
 class RecommendSerializer(serializers.ModelSerializer) :
 

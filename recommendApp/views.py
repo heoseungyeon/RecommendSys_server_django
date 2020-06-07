@@ -8,6 +8,7 @@ from knox.auth import TokenAuthentication
 from .service import *
 from rest_framework import status
 from .detect import image_detect
+from django.http import Http404
 # Create your views here.
 class TextRecommendAPIView(APIView):
 
@@ -80,4 +81,21 @@ class ImageRecommendAPIView(APIView):
             })
 
         return Response(upload_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserPlaceHistoryDetailAPIView(APIView):
+
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    def get_object(self, idx):
+        try:
+            return UserPlaceHistory.objects.get(idx=idx)
+        except UserPlaceHistory.DoesNotExist:
+            raise Http404
+
+    def get(self, request, idx, format=None):
+        posting = self.get_object(idx)
+        serializer = UserPlaceHistoryDetailSerializer(posting)
+        return Response(serializer.data)
 

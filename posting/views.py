@@ -62,10 +62,13 @@ class UpLoadPosting(APIView):
 
         imageResults = []
         imageScore = dict()
-        textScore = dict()
+        # textResults = []
+        # textScore = dict()
 
         if serializer.is_valid():
             serializer.save()
+            #textResults=Grade(serializer.data['context'])
+            #print(textResults)
             if serializer.data['img_1']:
                 imageResults.append(image_detect(serializer.data['img_1']))
             if serializer.data['img_2']:
@@ -84,7 +87,6 @@ class UpLoadPosting(APIView):
                     imageScore[data.get('label')] = data.get('confidence')
                     insertImageScore(request,imageScore)
                     imageScore.clear()
-
 
 
 

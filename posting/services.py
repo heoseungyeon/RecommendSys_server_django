@@ -33,13 +33,12 @@ def insertTextScore(request,textScore):
 
     # TextScoreUpdate
     for textKey in textScore.keys():
-        categoryS = CategoryTextS.objects.all()
-        for category in categoryS:
+        categoryM = CategoryTextM.objects.all()
+        for category in categoryM:
             if category.ctgr_name == textKey:
                 print("발견2")
-                small_id = category.ctgr_id
-                large_id = category.large_id.ctgr_lid
-                middle_id = category.middle_id.ctgr_id
+                middle_id = category.ctgr_id
+
                 # largeScore Update
                 data = dict()
 
@@ -49,20 +48,23 @@ def insertTextScore(request,textScore):
                 data['text_ctgr_idx'] = middle_id
                 data['score'] = textScore.get(textKey)
                 data['posting_idx'] = currentPostId()
-                print("large_image:", data)
+                print("middle text:", data)
                 serializer = TextMScoreSerializer(data=data)
                 if serializer.is_valid():
                     serializer.save()
                 # SmallScore Update
-                data.clear()
-                data['user_idx'] = user_id
-                data['text_ctgr_idx'] = small_id
-                data['score'] = textScore.get(textKey)
-                data['posting_idx'] = currentPostId()
-                print("large_image:", data)
-                serializer = TextSScoreSerializer(data=data)
-                if serializer.is_valid():
-                    serializer.save()
+                categoryS = CategoryTextS.objects.all()
+                for category in categoryS:
+                    if category.middle_id == middle_id:
+                        data.clear()
+                        data['user_idx'] = user_id
+                        data['text_ctgr_idx'] = category.ctgr_id
+                        data['score'] = textScore.get(textKey)
+                        data['posting_idx'] = currentPostId()
+                        print("large_text:", data)
+                        serializer = TextSScoreSerializer(data=data)
+                        if serializer.is_valid():
+                            serializer.save()
 
 def insertImageScore(request,imageScore):
     user_id = request.user.idx

@@ -2,12 +2,7 @@ from rest_framework import serializers
 # from .models import UserPick
 from recommendApp.models import *
 from pick.models import UserPick
-from .models import UserSearchHistory
 
-class UserSearchHistorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserSearchHistory
-        fields = '__all__'
 
 class RecommendUserPlaceHistorySerializer(serializers.ModelSerializer):
     class Meta:
