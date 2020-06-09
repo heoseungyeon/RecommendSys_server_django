@@ -9,6 +9,8 @@ from .service import *
 from rest_framework import status
 from .detect import image_detect
 from django.http import Http404
+from follow_feed.models import UserLikeHistory
+from pick.models import UserPick
 # Create your views here.
 class TextRecommendAPIView(APIView):
 
@@ -95,7 +97,38 @@ class UserPlaceHistoryDetailAPIView(APIView):
             raise Http404
 
     def get(self, request, idx, format=None):
+
+
         posting = self.get_object(idx)
+        place_id = 1
+        userPlaceHistory = UserPlaceHistory.objects.all()
+        for place in userPlaceHistory:
+            if place.idx == idx:
+                print("check")
+                place_id = place.place_id
+        valid = False
+        valid_pick = False
+        # user_id 추가
+        user_id = request.user.idx
+        userPick = UserPick.objects.all()
+        userLikeHistory= UserLikeHistory.objects.all()
         serializer = UserPlaceHistoryDetailSerializer(posting)
-        return Response(serializer.data)
+
+        for userlike in userLikeHistory:
+            if userlike.user_idx.idx == user_id:
+                if userlike.posting_idx.idx == idx:
+                    valid = True
+        for pick in userPick:
+            if pick.user_idx.idx == user_id:
+                if pick.place_id == place_id:
+                    valid_pick = True
+        print(serializer.data)
+        temp = dict()
+        temp = serializer.data
+        print(temp)
+        temp["like_valid"] = str(valid)
+        temp["pick_valid"] = str(valid_pick)
+
+
+        return Response(temp)
 

@@ -9,6 +9,8 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
+from .models import UserLikeHistory
+from pick.models import UserPick
 import json
 
 #CreateFeedActivity
@@ -42,6 +44,8 @@ class CreateFeedActivity(APIView):
                 follow_lists.append(follow.following_idx.idx)
 
         print("follow_list:",follow_list)
+
+
 
         #클라이언트에 보낼 데이터 리스트
         data= []
@@ -96,11 +100,46 @@ class CreateFeedActivity(APIView):
                 if place.tag_6 is not None:
                     temp["tag_6"] = place.tag_6
                 temp["rating"] = place.rating
+
+                posting = temp["posting_id"]
+                place_id = 1
+                userPlaceHistory = UserPlaceHistory.objects.all()
+
+                place_id = place.place_id
+                valid = False
+                valid_pick = False
+                # user_id 추가
+                user_id = request.user.idx
+                userPick = UserPick.objects.all()
+                userLikeHistory = UserLikeHistory.objects.all()
+
+                for userlike in userLikeHistory:
+                    if userlike.user_idx.idx == user_id:
+                        if userlike.posting_idx.idx == temp["posting_id"]:
+                            valid = True
+                for pick in userPick:
+                    if pick.user_idx.idx == user_id:
+                        if pick.place_id == place_id:
+                            valid_pick = True
+
+                temp["like_valid"] = str(valid)
+                temp["pick_valid"] = str(valid_pick)
+
                 place_data.append(temp)
         #팔로잉 유저 리스트 response 에 담기
         temp=dict()
         temp["review_data"] = place_data
         temp["follow_list"] = follow_list
+
+        likes = []
+        userlike = UserLikeHistory.objects.all()
+        for like in userlike:
+            if like.user_idx.idx == user_id:
+                info=dict()
+                info["posting_id"]=like.posting_idx.idx
+                likes.append(info)
+
+        temp["like"]=likes
         print("data: ", temp)
 
 

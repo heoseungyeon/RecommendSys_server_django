@@ -5,6 +5,9 @@ from uuid import uuid4
 from django.utils import timezone
 from follow_feed.models import date_upload_posting
 # Create your models here.
+from follow_feed.models import UserLikeHistory
+from pick.models import UserPick
+
 
 
 class CategoryL(models.Model):

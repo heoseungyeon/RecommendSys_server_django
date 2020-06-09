@@ -12,10 +12,25 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from posting.services import *
 from recommendApp.detect import *
+from .TextClassifier.Bi_LSTM.Classifier import text_detect
 #from .darkflow import ImageDetection
 import json
 
 #UpLoadPosting
+
+class test(APIView):
+
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    def post(self, request, format=None):
+
+        query = request.data['query']
+        result = text_detect(query)
+
+        print('result: ', result)
+        return Response(1)
 
 class UpLoadPosting(APIView):
     renderer_classes = [JSONRenderer]
@@ -62,8 +77,10 @@ class UpLoadPosting(APIView):
 
         imageResults = []
         imageScore = dict()
-        # textResults = []
-        # textScore = dict()
+
+
+
+
 
         if serializer.is_valid():
             serializer.save()
@@ -88,11 +105,19 @@ class UpLoadPosting(APIView):
                     insertImageScore(request,imageScore)
                     imageScore.clear()
 
-
+        #텍스트 파싱
+        textScore=dict()
+        query = request.data['context']
+        result = text_detect(query)
+        print(result)
+        for data in result:
+            textScore[data.get('label')] =data.get('accuracy')
+            insertTextScore(request, textScore)
+            textScore.clear()
 
         #테스트
         # imageScore['칼국수']=1
-        textScore['매콤한']=1
+        #textScore['매콤한']=1
         #Insert to UserPlaceHistory
         #check=insertUserPlaceHistory(request,post_id)
 

@@ -55,13 +55,13 @@ def insertTextScore(request,textScore):
                 # SmallScore Update
                 categoryS = CategoryTextS.objects.all()
                 for category in categoryS:
-                    if category.middle_id == middle_id:
+                    if category.middle_id.ctgr_id == middle_id:
                         data.clear()
                         data['user_idx'] = user_id
                         data['text_ctgr_idx'] = category.ctgr_id
                         data['score'] = textScore.get(textKey)
                         data['posting_idx'] = currentPostId()
-                        print("large_text:", data)
+                        print("small_text:", data)
                         serializer = TextSScoreSerializer(data=data)
                         if serializer.is_valid():
                             serializer.save()

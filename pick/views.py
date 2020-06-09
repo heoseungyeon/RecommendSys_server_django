@@ -26,7 +26,7 @@ class CreatePickActivity(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        user_id= request.data.get('user_idx')
+        user_id= request.user.idx
         rating=0.0
         userpick = UserPick.objects.all()
         data= []
@@ -39,6 +39,11 @@ class CreatePickActivity(APIView):
                 data.append(temp)
                 print(data)
 
-        return Response(data, status=status.HTTP_201_CREATED)
+        return Response({
+
+
+            "pick": data
+
+        })
 
 
